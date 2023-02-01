@@ -58,41 +58,46 @@ const Home = ({ navigation }) => {
     {
       id: 0,
       name: "Ski Villa",
+      description:
+        "Visit the ski village for an amazing and unforgettable day.",
       img: images.skiVilla,
     },
-    {
-      id: 1,
-      name: "Climbing Hills",
-      img: images.climbingHills,
-    },
-    {
-      id: 2,
-      name: "Frozen Hills",
-      img: images.frozenHills,
-    },
-    {
-      id: 3,
-      name: "Beach",
-      img: images.beach,
-    },
+    // {
+    //   id: 1,
+    //   name: "Climbing Hills",
+    //   img: images.climbingHills,
+    // },
+    // {
+    //   id: 2,
+    //   name: "Frozen Hills",
+    //   img: images.frozenHills,
+    // },
+    // {
+    //   id: 3,
+    //   name: "Beach",
+    //   img: images.beach,
+    // },
   ]);
 
   // Render
 
   function renderDestinations(item, index) {
-    var destinationStyle = {};
-
-    if (index == 0) {
-      destinationStyle = { marginLeft: SIZES.padding };
-    }
-
     return (
       <TouchableOpacity
-        style={{
-          justifyContent: "center",
-          marginHorizontal: SIZES.base,
-          ...destinationStyle,
-        }}
+        style={[
+          styles.shadow,
+          {
+            justifyContent: "space-between",
+            marginHorizontal: SIZES.base,
+            flexDirection: "row",
+            height: 100,
+            padding: SIZES.base,
+            // borderStyle: "dotted",
+            // borderColor: COLORS.gray,
+            // borderWidth: 1,
+            // borderRadius: 10,
+          },
+        ]}
         onPress={() => {
           navigation.navigate("DestinationDetail");
         }}
@@ -101,15 +106,19 @@ const Home = ({ navigation }) => {
           source={item.img}
           resizeMode="cover"
           style={{
-            width: SIZES.width * 0.28,
-            height: "82%",
-            borderRadius: 15,
+            width: SIZES.width * 0.2,
+            height: "90%",
+            borderRadius: "50%",
           }}
         />
-
-        <Text style={{ marginTop: SIZES.base / 2, ...FONTS.h4 }}>
-          {item.name}
-        </Text>
+        <View style={{ marginLeft: SIZES.base * 2 }}>
+          <Text style={{ marginTop: SIZES.base / 2, ...FONTS.h4 }}>
+            {item.name}
+          </Text>
+          <Text style={{ marginTop: SIZES.base / 2, ...FONTS.body4 }}>
+            {item.description}
+          </Text>
+        </View>
       </TouchableOpacity>
     );
   }
@@ -125,7 +134,7 @@ const Home = ({ navigation }) => {
         }}
       >
         <Image
-          source={images.homeBanner}
+          source={images.joyland}
           resizeMode="cover"
           style={{
             width: "100%",
@@ -232,7 +241,7 @@ const Home = ({ navigation }) => {
           Destination
         </Text>
         <FlatList
-          horizontal
+          horizontal={false}
           showsHorizontalScrollIndicator={false}
           data={destinations}
           keyExtractor={(item) => item.id.toString()}
@@ -251,7 +260,7 @@ const styles = StyleSheet.create({
   shadow: {
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
+      width: 2,
       height: 2,
     },
     shadowOpacity: 0.25,
