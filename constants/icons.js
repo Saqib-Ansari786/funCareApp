@@ -20,6 +20,8 @@ export const user = require("../assets/icons/user_icon.png");
 export const villa = require("../assets/icons/villa_icon.png");
 export const wind = require("../assets/icons/wind_icon.png");
 export const arrow = require("../assets/icons/arrow.png");
+export const play = require("../assets/icons/playicon.png");
+export const main = require("../assets/icons/main.png");
 
 export default {
   airplane,
@@ -44,4 +46,6 @@ export default {
   villa,
   wind,
   arrow,
+  play,
+  main,
 };
