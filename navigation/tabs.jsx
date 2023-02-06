@@ -8,6 +8,7 @@ import { icons, COLORS } from "../constants";
 import Onboarding1 from "../screens/OnBoardingScreens/Onboarding1";
 import Onboarding2 from "../screens/OnBoardingScreens/Onboarding2";
 import UserProfile from "../screens/UserProfile";
+import SignUpScreen from "../screens/SignUpScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -74,7 +75,7 @@ const Tabs = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="PlayLands" component={Onboarding1} />
-      <Tab.Screen name="History" component={Onboarding2} />
+      <Tab.Screen name="History" component={SignUpScreen} />
       <Tab.Screen name="Account" component={UserProfile} />
     </Tab.Navigator>
   );
