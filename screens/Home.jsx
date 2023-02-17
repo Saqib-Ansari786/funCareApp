@@ -158,9 +158,9 @@ const Home = ({ navigation }) => {
       {/* Banner */}
       <View
         style={{
-          flex: 1,
+          flex: 0.5,
           marginTop: SIZES.base,
-          paddingHorizontal: SIZES.padding,
+          paddingHorizontal: SIZES.padding * 0.6,
         }}
       >
         <Video

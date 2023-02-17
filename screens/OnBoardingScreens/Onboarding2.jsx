@@ -8,7 +8,7 @@ export default function Onboarding2({ navigation }) {
       <Onboarding
         title="Prebooking with offers"
         image={images.onboardingImage1}
-        buttonNavigate={() => navigation.navigate("Home")}
+        buttonNavigate={() => navigation.navigate("Signup")}
         description="Book your next trip with us and get 20% off on your first booking."
       />
     </>

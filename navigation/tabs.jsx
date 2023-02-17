@@ -9,6 +9,8 @@ import Onboarding1 from "../screens/OnBoardingScreens/Onboarding1";
 import Onboarding2 from "../screens/OnBoardingScreens/Onboarding2";
 import UserProfile from "../screens/UserProfile";
 import SignUpScreen from "../screens/SignUpScreen";
+import PlayLands from "../screens/PlayLands";
+import MyBookings from "../screens/MyBookings";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +47,7 @@ const Tabs = () => {
                   }}
                 />
               );
-            case "History":
+            case "MyBookings":
               return (
                 <Image
                   source={icons.bookmark}
@@ -57,7 +59,7 @@ const Tabs = () => {
                   }}
                 />
               );
-            case "Account":
+            case "UserProfile":
               return (
                 <Image
                   source={icons.user}
@@ -74,9 +76,9 @@ const Tabs = () => {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="PlayLands" component={Onboarding1} />
-      <Tab.Screen name="History" component={SignUpScreen} />
-      <Tab.Screen name="Account" component={UserProfile} />
+      <Tab.Screen name="PlayLands" component={PlayLands} />
+      <Tab.Screen name="MyBookings" component={MyBookings} />
+      <Tab.Screen name="UserProfile" component={UserProfile} />
     </Tab.Navigator>
   );
 };

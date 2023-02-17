@@ -14,6 +14,7 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { COLORS, SIZES, FONTS, icons } from "./constants";
 import Tabs from "./navigation/tabs";
 import DestinationDetail from "./screens/DestinationDetail";
+import SignUpScreen from "./screens/SignUpScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -52,6 +53,16 @@ export default function App() {
         <Stack.Screen
           name="Onboarding2"
           component={Onboarding2}
+          options={{
+            title: null,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Signup"
+          component={SignUpScreen}
           options={{
             title: null,
             headerStyle: {

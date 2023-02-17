@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
+  Image,
 } from "react-native";
 import { firebaseConfig } from "../firebase";
 import firebase from "firebase/compat/app";
 import { FirebaseAuthApplicationVerifier } from "expo-firebase-recaptcha";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-const SignUpScreen = () => {
+import { phone, verification } from "../constants/images";
+import { COLORS, FONTS, SIZES } from "../constants";
+const SignUpScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState(null);
@@ -23,7 +26,10 @@ const SignUpScreen = () => {
 
     phoneProvider
       .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
-      .then(setVerificationId)
+      .then((id) => {
+        setVerificationId(id);
+        setErrorMessage(null);
+      })
       .catch((error) => {
         setErrorMessage(error.message);
       });
@@ -40,35 +46,50 @@ const SignUpScreen = () => {
       .signInWithCredential(credential)
       .then((result) => {
         setVerificationCode("");
+        setErrorMessage(null);
         console.log(result);
+        Alert.alert("Verification Successful", "You are now signed in!");
+        gotoUserProfile();
       })
       .catch((error) => {
         setErrorMessage(error.message);
         alert(error.message);
       });
-
-    Alert.alert("Verification Successful", "You are now signed in!");
   };
 
+  function gotoUserProfile() {
+    setTimeout(() => {
+      navigation.navigate("Home");
+    }, 1000);
+  }
+
   return (
-    <View>
+    <View style={styles.container}>
       <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
       />
-      <TextInput
-        placeholder="Enter phone number"
-        onChangeText={(text) => setPhoneNumber(text)}
-        value={phoneNumber}
-        style={styles.textInput}
-        keyboardType="phone-pad"
-        autoComplete="tel"
-      />
-      <TouchableOpacity onPress={sendVerificationCode} style={styles.button}>
-        <Text>Send Verification Code</Text>
-      </TouchableOpacity>
-      {verificationId && (
+      {!verificationId ? (
         <>
+          <Image source={phone} style={styles.image} />
+          <TextInput
+            placeholder="Enter phone number"
+            onChangeText={(text) => setPhoneNumber(text)}
+            value={phoneNumber}
+            style={styles.textInput}
+            keyboardType="phone-pad"
+            autoComplete="tel"
+          />
+          <TouchableOpacity
+            onPress={sendVerificationCode}
+            style={styles.button}
+          >
+            <Text style={styles.text}>Send Verification Code</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <>
+          <Image source={verification} style={styles.image} />
           <TextInput
             placeholder="Enter verification code"
             value={verificationCode}
@@ -76,7 +97,7 @@ const SignUpScreen = () => {
             style={styles.textInput}
           />
           <TouchableOpacity onPress={verifyCode} style={styles.button}>
-            <Text>Verify Code</Text>
+            <Text style={styles.text}>Verify Code</Text>
           </TouchableOpacity>
         </>
       )}
@@ -95,17 +116,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textInput: {
-    height: 40,
-    width: 300,
-    borderColor: "gray",
-    borderWidth: 1,
-    margin: 10,
-    padding: 10,
+    height: SIZES.height * 0.07,
+    width: SIZES.width * 0.9,
+    borderColor: COLORS.secondary,
+    borderBottomWidth: 1,
+    padding: SIZES.radius,
+    margin: SIZES.radius,
+    borderRadius: SIZES.radius,
+    fontSize: SIZES.h3,
   },
   button: {
     alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    margin: 10,
+    backgroundColor: COLORS.primary,
+    padding: SIZES.radius,
+    margin: SIZES.radius,
+    borderRadius: SIZES.radius,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+  },
+  text: {
+    ...FONTS.h2,
   },
 });
