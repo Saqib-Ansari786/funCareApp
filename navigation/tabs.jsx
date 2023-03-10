@@ -1,16 +1,11 @@
 import React from "react";
 import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import Home from "../screens/Home";
-
 import { icons, COLORS } from "../constants";
-import Onboarding1 from "../screens/OnBoardingScreens/Onboarding1";
-import Onboarding2 from "../screens/OnBoardingScreens/Onboarding2";
-import UserProfile from "../screens/UserProfile";
-import SignUpScreen from "../screens/SignUpScreen";
 import PlayLands from "../screens/PlayLands";
 import MyBookings from "../screens/MyBookings";
+import UserProfileScreen from "../screens/UserProfile";
 
 const Tab = createBottomTabNavigator();
 
@@ -78,7 +73,7 @@ const Tabs = () => {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="PlayLands" component={PlayLands} />
       <Tab.Screen name="MyBookings" component={MyBookings} />
-      <Tab.Screen name="UserProfile" component={UserProfile} />
+      <Tab.Screen name="UserProfile" component={UserProfileScreen} />
     </Tab.Navigator>
   );
 };

@@ -14,7 +14,9 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { COLORS, SIZES, FONTS, icons } from "./constants";
 import Tabs from "./navigation/tabs";
 import DestinationDetail from "./screens/DestinationDetail";
+import EditProfileScreen from "./screens/EditProfileScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+import { Provider } from "react-native-paper";
 
 const theme = {
   ...DefaultTheme,
@@ -37,110 +39,120 @@ export default function App() {
   const Stack = createStackNavigator();
 
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator initialRouteName={"Onboarding1"}>
-        {/* Screens */}
-        <Stack.Screen
-          name="Onboarding1"
-          component={Onboarding1}
-          options={{
-            title: null,
-            headerStyle: {
-              backgroundColor: COLORS.white,
-            },
-          }}
-        />
-        <Stack.Screen
-          name="Onboarding2"
-          component={Onboarding2}
-          options={{
-            title: null,
-            headerStyle: {
-              backgroundColor: COLORS.white,
-            },
-          }}
-        />
-        <Stack.Screen
-          name="Signup"
-          component={SignUpScreen}
-          options={{
-            title: null,
-            headerStyle: {
-              backgroundColor: COLORS.white,
-            },
-          }}
-        />
-        <Stack.Screen
-          name="DestinationDetail"
-          component={DestinationDetail}
-          options={{
-            title: null,
-            headerShown: false,
-          }}
-        />
+    <Provider>
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator initialRouteName={"Onboarding1"}>
+          {/* Screens */}
+          <Stack.Screen
+            name="Onboarding1"
+            component={Onboarding1}
+            options={{
+              title: null,
+              headerStyle: {
+                backgroundColor: COLORS.white,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Onboarding2"
+            component={Onboarding2}
+            options={{
+              title: null,
+              headerStyle: {
+                backgroundColor: COLORS.white,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={SignUpScreen}
+            options={{
+              title: null,
+              headerStyle: {
+                backgroundColor: COLORS.white,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="DestinationDetail"
+            component={DestinationDetail}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfileScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
 
-        {/* Tabs */}
-        <Stack.Screen
-          name="Home"
-          component={Tabs}
-          options={{
-            title: null,
-            headerStyle: {
-              backgroundColor: COLORS.white,
-            },
-            headerLeft: ({ onPress }) => (
-              <TouchableOpacity
-                style={{ marginLeft: SIZES.padding }}
-                onPress={onPress}
-              >
-                <Image
-                  source={icons.back}
-                  resizeMode="contain"
+          {/* Tabs */}
+          <Stack.Screen
+            name="Home"
+            component={Tabs}
+            options={{
+              title: null,
+              headerStyle: {
+                backgroundColor: COLORS.white,
+              },
+              headerLeft: ({ onPress }) => (
+                <TouchableOpacity
+                  style={{ marginLeft: SIZES.padding }}
+                  onPress={onPress}
+                >
+                  <Image
+                    source={icons.back}
+                    resizeMode="contain"
+                    style={{
+                      width: 25,
+                      height: 25,
+                    }}
+                  />
+                </TouchableOpacity>
+              ),
+              headerRight: () => (
+                <TouchableOpacity
+                  style={{ marginRight: SIZES.padding }}
+                  onPress={() => console.log("Menu")}
+                >
+                  <Image
+                    source={icons.menu}
+                    resizeMode="contain"
+                    style={{
+                      width: 25,
+                      height: 25,
+                    }}
+                  />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <View
                   style={{
-                    width: 25,
-                    height: 25,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
                   }}
-                />
-              </TouchableOpacity>
-            ),
-            headerRight: () => (
-              <TouchableOpacity
-                style={{ marginRight: SIZES.padding }}
-                onPress={() => console.log("Menu")}
-              >
-                <Image
-                  source={icons.menu}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                  }}
-                />
-              </TouchableOpacity>
-            ),
-            headerTitle: () => (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                }}
-              >
-                <Image
-                  source={icons.main}
-                  resizeMode="cover"
-                  style={{
-                    width: 200,
-                    height: 200,
-                  }}
-                />
-              </View>
-            ),
-            headerTitleAlign: "center",
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+                >
+                  <Image
+                    source={icons.main}
+                    resizeMode="cover"
+                    style={{
+                      width: 200,
+                      height: 200,
+                    }}
+                  />
+                </View>
+              ),
+              headerTitleAlign: "center",
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

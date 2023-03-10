@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { firebaseConfig } from "../firebase";
 import firebase from "firebase/compat/app";
-import { FirebaseAuthApplicationVerifier } from "expo-firebase-recaptcha";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { phone, verification } from "../constants/images";
 import { COLORS, FONTS, SIZES } from "../constants";
