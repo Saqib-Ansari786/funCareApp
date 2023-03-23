@@ -59,7 +59,7 @@ const Home = ({ navigation }) => {
   const [destinations, setDestinations] = React.useState([
     {
       id: 0,
-      name: "Ski Villa",
+      name: "Joy land",
       description:
         "Visit the ski village for an amazing and unforgettable day.",
       img: images.skiVilla,
@@ -69,7 +69,7 @@ const Home = ({ navigation }) => {
     },
     {
       id: 1,
-      name: "Climbing Hills",
+      name: "Play land",
       description:
         "Visit the ski village for an amazing and unforgettable day.",
       img: images.climbingHills,
@@ -79,7 +79,7 @@ const Home = ({ navigation }) => {
     },
     {
       id: 2,
-      name: "Frozen Hills",
+      name: "Museum Vibe place",
       description: "Travel to the snow for an unforgettable experience.",
       img: images.frozenHills,
       playLocate: "lahore",
@@ -88,7 +88,7 @@ const Home = ({ navigation }) => {
     },
     {
       id: 3,
-      name: "Beach",
+      name: "Cartoon Network",
       description: "Spend a full day in the sun and sand.",
       img: images.beach,
       playLocate: "lahore",

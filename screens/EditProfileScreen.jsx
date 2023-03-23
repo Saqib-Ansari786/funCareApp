@@ -8,10 +8,10 @@ import {
   Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Button, TextInput } from "react-native-paper";
-import { COLORS } from "../constants";
+import { Button, IconButton, TextInput } from "react-native-paper";
+import { COLORS, FONTS, SIZES } from "../constants";
 
-const EditProfileScreen = () => {
+const EditProfileScreen = ({ navigation }) => {
   const [text, setText] = React.useState("");
 
   const [username, setUsername] = useState("John Doe");
@@ -55,6 +55,7 @@ const EditProfileScreen = () => {
         onPress={handlePickImage}
       >
         <Image style={styles.avatar} source={{ uri: avatarUrl }} />
+        <IconButton icon="camera" size={30} color={COLORS.primary} />
         <Text style={styles.changeAvatar}>Change Avatar</Text>
       </TouchableOpacity>
       <View style={styles.inputContainer}>
@@ -71,14 +72,12 @@ const EditProfileScreen = () => {
           right={<TextInput.Icon icon="email" />}
         />
       </View>
-
-      <Button
-        mode="contained"
-        onPress={handleSaveChanges}
-        buttonColor={COLORS.primary}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("Home")}
       >
-        Submit Changes
-      </Button>
+        <Text style={styles.buttonText}>Submit Changes</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -102,21 +101,23 @@ const styles = StyleSheet.create({
   },
   changeAvatar: {
     fontSize: 18,
-    color: "#007aff",
+    color: COLORS.primary,
   },
   inputContainer: {
     width: "80%",
   },
 
   button: {
-    backgroundColor: "#007aff",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: SIZES.padding,
+    paddingVertical: SIZES.radius,
+    borderRadius: SIZES.radius,
+    marginVertical: SIZES.padding,
   },
   buttonText: {
-    fontSize: 18,
     color: "#ffffff",
+    ...FONTS.h3,
+    letterSpacing: 1,
   },
 });
 

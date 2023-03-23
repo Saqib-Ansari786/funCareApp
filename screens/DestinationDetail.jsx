@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
+import { Button, IconButton } from "react-native-paper";
 
 const StarReview = ({ rate }) => {
   var starComponents = [];
@@ -96,7 +97,7 @@ const DestinationDetail = ({ route, navigation }) => {
       {/* Header */}
       <View style={{ flex: 2 }}>
         <Image
-          source={images.skiVillaBanner}
+          source={images.joyland}
           resizeMode="cover"
           style={{
             width: "100%",
@@ -120,7 +121,7 @@ const DestinationDetail = ({ route, navigation }) => {
           <View style={{ flexDirection: "row" }}>
             <View style={styles.shadow}>
               <Image
-                source={images.skiVilla}
+                source={images.joyland}
                 resizeMode="cover"
                 style={{
                   width: 70,
@@ -213,7 +214,7 @@ const DestinationDetail = ({ route, navigation }) => {
 
           <IconLabel icon={icons.parking} label="Parking" />
 
-          <IconLabel icon={icons.wind} label="4 °C" />
+          <IconLabel icon={icons.wind} label="Disc 50%" />
         </View>
 
         {/* About */}
