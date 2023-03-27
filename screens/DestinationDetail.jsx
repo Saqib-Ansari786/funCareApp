@@ -68,9 +68,9 @@ const StarReview = ({ rate }) => {
   );
 };
 
-const IconLabel = ({ icon, label }) => {
+const IconLabel = ({ icon, label, onPress }) => {
   return (
-    <View style={{ alignItems: "center" }}>
+    <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
       <Image
         source={icon}
         resizeMode="cover"
@@ -84,7 +84,7 @@ const IconLabel = ({ icon, label }) => {
       >
         {label}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -210,7 +210,11 @@ const DestinationDetail = ({ route, navigation }) => {
             justifyContent: "space-between",
           }}
         >
-          <IconLabel icon={icons.villa} label={name} />
+          <IconLabel
+            icon={icons.villa}
+            label={name}
+            onPress={() => navigation.navigate("MapLocation")}
+          />
 
           <IconLabel icon={icons.parking} label="Parking" />
 

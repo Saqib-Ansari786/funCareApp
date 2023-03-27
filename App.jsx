@@ -17,6 +17,7 @@ import DestinationDetail from "./screens/DestinationDetail";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import { Provider } from "react-native-paper";
+import MapLocation from "./screens/MapLocation";
 
 const theme = {
   ...DefaultTheme,
@@ -84,6 +85,14 @@ export default function App() {
           <Stack.Screen
             name="EditProfile"
             component={EditProfileScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="MapLocation"
+            component={MapLocation}
             options={{
               title: null,
               headerShown: false,
