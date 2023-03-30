@@ -6,52 +6,13 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  BackHandler,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
 import { Video, AVPlaybackStatus } from "expo-av";
-
-const OptionItem = ({ bgColor, icon, label, onPress }) => {
-  return (
-    <TouchableOpacity
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      onPress={onPress}
-    >
-      <View style={[styles.shadow, { width: 60, height: 60 }]}>
-        <LinearGradient
-          style={[
-            {
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 15,
-              backgroundColor: "red",
-            },
-          ]}
-          colors={bgColor}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-        >
-          <Image
-            source={icon}
-            resizeMode="cover"
-            style={{
-              tintColor: COLORS.white,
-              width: 30,
-              height: 30,
-            }}
-          />
-        </LinearGradient>
-      </View>
-      <Text
-        style={{ marginTop: SIZES.base, color: COLORS.gray, ...FONTS.body3 }}
-      >
-        {label}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+import { useEffect } from "react";
 
 const Home = ({ navigation }) => {
   // Dummy Data
@@ -153,6 +114,18 @@ const Home = ({ navigation }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        BackHandler.exitApp();
+        return true;
+      }
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <View style={styles.container}>
       {/* Banner */}
@@ -173,8 +146,6 @@ const Home = ({ navigation }) => {
           shouldPlay
         />
       </View>
-
-      {/* Options */}
 
       {/* Destination */}
       <View style={{ flex: 1 }}>

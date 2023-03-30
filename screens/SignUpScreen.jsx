@@ -13,18 +13,20 @@ import firebase from "firebase/compat/app";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { phone, verification } from "../constants/images";
 import { COLORS, FONTS, SIZES } from "../constants";
+
 const SignUpScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const recaptchaVerifier = useRef(null);
+  const [countryCode, setCountryCode] = useState("+92");
 
   const sendVerificationCode = () => {
     const phoneProvider = new firebase.auth.PhoneAuthProvider();
 
     phoneProvider
-      .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
+      .verifyPhoneNumber(countryCode + phoneNumber, recaptchaVerifier.current)
       .then((id) => {
         setVerificationId(id);
         setErrorMessage(null);
@@ -71,14 +73,33 @@ const SignUpScreen = ({ navigation }) => {
       {!verificationId ? (
         <>
           <Image source={phone} style={styles.image} />
-          <TextInput
-            placeholder="Enter phone number"
-            onChangeText={(text) => setPhoneNumber(text)}
-            value={phoneNumber}
-            style={styles.textInput}
-            keyboardType="phone-pad"
-            autoComplete="tel"
-          />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                borderWidth: 1,
+                padding: 5,
+                borderRadius: 5,
+                borderColor: COLORS.secondary,
+                fontWeight: "bold",
+              }}
+            >
+              {countryCode}
+            </Text>
+            <TextInput
+              placeholder="3211234567"
+              onChangeText={(text) => setPhoneNumber(text)}
+              value={phoneNumber}
+              style={styles.textInput}
+              keyboardType="phone-pad"
+              autoComplete="tel"
+            />
+          </View>
+
           <TouchableOpacity
             onPress={sendVerificationCode}
             style={styles.button}
@@ -116,7 +137,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: SIZES.height * 0.07,
-    width: SIZES.width * 0.9,
+    width: SIZES.width * 0.8,
     borderColor: COLORS.secondary,
     borderBottomWidth: 1,
     padding: SIZES.radius,

@@ -13,7 +13,6 @@ import { COLORS, FONTS, SIZES } from "../constants";
 
 const EditProfileScreen = ({ navigation }) => {
   const [text, setText] = React.useState("");
-
   const [username, setUsername] = useState("John Doe");
   const [email, setEmail] = useState("johndoe@example.com");
   const [avatarUrl, setAvatarUrl] = useState(

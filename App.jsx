@@ -18,6 +18,7 @@ import EditProfileScreen from "./screens/EditProfileScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import { Provider } from "react-native-paper";
 import MapLocation from "./screens/MapLocation";
+import SplashScreen from "./screens/SplashScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -42,8 +43,16 @@ export default function App() {
   return (
     <Provider>
       <NavigationContainer theme={theme}>
-        <Stack.Navigator initialRouteName={"Onboarding1"}>
+        <Stack.Navigator initialRouteName={"Splash"}>
           {/* Screens */}
+          <Stack.Screen
+            name="Splash"
+            component={SplashScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name="Onboarding1"
             component={Onboarding1}

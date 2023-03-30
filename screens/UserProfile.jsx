@@ -2,6 +2,12 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { COLORS, FONTS, SIZES } from "../constants";
 
+const userData = {
+  name: "John Doe",
+  email: "johnDoe@example.com",
+  phone: "+1 (555) 123-4567",
+};
+
 const UserProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
@@ -10,13 +16,13 @@ const UserProfileScreen = ({ navigation }) => {
           style={styles.avatar}
           source={{ uri: "https://randomuser.me/api/portraits/men/1.jpg" }}
         />
-        <Text style={styles.name}>John Doe</Text>
-        <Text style={styles.phone}>+1 (555) 123-4567</Text>
-        <Text style={styles.email}>johndoe@example.com</Text>
+        <Text style={styles.name}>{userData.name}</Text>
+        <Text style={styles.phone}>{userData.phone}</Text>
+        <Text style={styles.email}>{userData.email}</Text>
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("EditProfile")}
+        onPress={() => navigation.navigate("EditProfile", userData)}
       >
         <Text style={styles.buttonText}>Edit Profile</Text>
       </TouchableOpacity>
