@@ -117,11 +117,8 @@ export default function App() {
               headerStyle: {
                 backgroundColor: COLORS.white,
               },
-              headerLeft: ({ onPress }) => (
-                <TouchableOpacity
-                  style={{ marginLeft: SIZES.padding }}
-                  onPress={onPress}
-                >
+              headerLeft: () => (
+                <TouchableOpacity style={{ marginLeft: SIZES.padding }}>
                   <Image
                     source={icons.back}
                     resizeMode="contain"

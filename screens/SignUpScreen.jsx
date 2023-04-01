@@ -13,6 +13,7 @@ import firebase from "firebase/compat/app";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { phone, verification } from "../constants/images";
 import { COLORS, FONTS, SIZES } from "../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUpScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -45,11 +46,12 @@ const SignUpScreen = ({ navigation }) => {
     firebase
       .auth()
       .signInWithCredential(credential)
-      .then((result) => {
+      .then(async (result) => {
         setVerificationCode("");
         setErrorMessage(null);
         console.log(result);
         Alert.alert("Verification Successful", "You are now signed in!");
+        await AsyncStorage.setItem("authId", result.user.uid); // Save the authentication ID to storage
         gotoUserProfile();
       })
       .catch((error) => {
