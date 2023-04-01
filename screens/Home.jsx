@@ -13,9 +13,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
 import { Video, AVPlaybackStatus } from "expo-av";
 import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
-const Home = ({ navigation }) => {
+const Home = () => {
   // Dummy Data
+  const navigation = useNavigation();
 
   const [destinations, setDestinations] = React.useState([
     {
@@ -118,13 +120,16 @@ const Home = ({ navigation }) => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        BackHandler.exitApp();
-        return true;
+        if (navigation.isFocused()) {
+          BackHandler.exitApp();
+          return true;
+        }
+        return false;
       }
     );
 
     return () => backHandler.remove();
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
