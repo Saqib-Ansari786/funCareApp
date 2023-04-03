@@ -18,7 +18,7 @@ const Tabs = () => {
           const tintColor = focused ? COLORS.primary : COLORS.gray;
 
           switch (route.name) {
-            case "Home":
+            case "HomeScreen":
               return (
                 <Image
                   source={icons.home}
@@ -70,7 +70,7 @@ const Tabs = () => {
         },
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="HomeScreen" component={Home} />
       <Tab.Screen name="PlayLands" component={PlayLands} />
       <Tab.Screen name="MyBookings" component={MyBookings} />
       <Tab.Screen name="UserProfile" component={UserProfileScreen} />

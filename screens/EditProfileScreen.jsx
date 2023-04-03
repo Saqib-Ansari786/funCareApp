@@ -39,7 +39,7 @@ const EditProfileScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setAvatarUrl(result.uri);
+      setAvatarUrl(result.assets[0].uri);
     }
   };
 
