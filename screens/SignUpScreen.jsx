@@ -33,7 +33,8 @@ const SignUpScreen = ({ navigation }) => {
         setErrorMessage(null);
       })
       .catch((error) => {
-        setErrorMessage(error.message);
+        setErrorMessage("Invalid Phone number! Please Try Again");
+        console.log(error);
       });
     setPhoneNumber("");
   };
@@ -55,8 +56,8 @@ const SignUpScreen = ({ navigation }) => {
         gotoUserProfile();
       })
       .catch((error) => {
-        setErrorMessage(error.message);
-        alert(error.message);
+        setErrorMessage("Invalid OTP Code! Please write Right Code...");
+        console.log(error);
       });
   };
 
@@ -117,6 +118,7 @@ const SignUpScreen = ({ navigation }) => {
             value={verificationCode}
             onChangeText={(text) => setVerificationCode(text)}
             style={styles.textInput}
+            keyboardType="number-pad"
           />
           <TouchableOpacity onPress={verifyCode} style={styles.button}>
             <Text style={styles.text}>Verify Code</Text>

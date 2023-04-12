@@ -9,7 +9,7 @@ const SplashScreen = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      checkIfLoggedIn();
+      navigation.navigate("Onboarding1");
     }, 3000);
 
     return () => clearTimeout(timeoutId);
