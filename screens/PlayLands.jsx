@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { Title, List, Divider } from "react-native-paper";
 import { images } from "../constants";
-
-import React from "react";
-import { StyleSheet, View, Text, ImageBackground } from "react-native";
 
 const Card = ({ title, image }) => {
   return (

@@ -1,11 +1,5 @@
-import {
-  Button,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useFonts } from "expo-font";
 import Onboarding1 from "./screens/OnBoardingScreens/Onboarding1";
 import Onboarding2 from "./screens/OnBoardingScreens/Onboarding2";
@@ -19,6 +13,8 @@ import SignUpScreen from "./screens/SignUpScreen";
 import { Provider } from "react-native-paper";
 import MapLocation from "./screens/MapLocation";
 import SplashScreen from "./screens/SplashScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 const theme = {
   ...DefaultTheme,
@@ -29,6 +25,21 @@ const theme = {
 };
 
 export default function App() {
+  const [route, setRoute] = useState("onboarding1");
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
+  const checkIfLoggedIn = async () => {
+    const authId = await AsyncStorage.getItem("authId");
+    if (authId) {
+      // User is already authenticated, navigate to home screen
+      setRoute("Home");
+    } else {
+      // User is not authenticated, navigate to sign up screen
+      setRoute("Onboarding1");
+    }
+  };
+
   const [loaded] = useFonts({
     "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
@@ -43,16 +54,16 @@ export default function App() {
   return (
     <Provider>
       <NavigationContainer theme={theme}>
-        <Stack.Navigator initialRouteName={"Splash"}>
+        <Stack.Navigator initialRouteName={route}>
           {/* Screens */}
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Splash"
             component={SplashScreen}
             options={{
               title: null,
               headerShown: false,
             }}
-          />
+          /> */}
           <Stack.Screen
             name="Onboarding1"
             component={Onboarding1}
