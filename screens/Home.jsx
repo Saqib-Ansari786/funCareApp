@@ -8,7 +8,6 @@ import {
   FlatList,
   BackHandler,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
 import { Video, AVPlaybackStatus } from "expo-av";
@@ -19,48 +18,24 @@ const Home = () => {
   // Dummy Data
   const navigation = useNavigation();
 
-  const [destinations, setDestinations] = React.useState([
-    {
-      id: 0,
-      name: "Joy land",
-      description:
-        "Visit the ski village for an amazing and unforgettable day.",
-      img: images.skiVilla,
-      playLocate: "lahore",
-      about: "Ski Villa is a beautiful place to visit in the winter.",
-      price: 1000,
-    },
-    {
-      id: 1,
-      name: "Play land",
-      description:
-        "Visit the ski village for an amazing and unforgettable day.",
-      img: images.climbingHills,
-      playLocate: "lahore",
-      about: "Ski Villa is a beautiful place to visit in the winter.",
-      price: 1000,
-    },
-    {
-      id: 2,
-      name: "Museum Vibe place",
-      description: "Travel to the snow for an unforgettable experience.",
-      img: images.frozenHills,
-      playLocate: "lahore",
-      about: "Ski Villa is a beautiful place to visit in the winter.",
-      price: 1000,
-    },
-    {
-      id: 3,
-      name: "Cartoon Network",
-      description: "Spend a full day in the sun and sand.",
-      img: images.beach,
-      playLocate: "lahore",
-      about: "Ski Villa is a beautiful place to visit in the winter.",
-      price: 1000,
-    },
-  ]);
+  const [destinations, setDestinations] = React.useState([]);
 
-  // Render
+  React.useEffect(() => {
+    getData(
+      "http://starter-express-api-git-main-salman36.vercel.app/api/auth/playlandrecord"
+    );
+  }, []);
+
+  async function getData(url) {
+    try {
+      const response = await fetch(url);
+      const responseData = await response.json();
+      console.log(responseData);
+      setDestinations(responseData);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   function renderDestinations(item, index) {
     return (
@@ -68,7 +43,6 @@ const Home = () => {
         style={[
           styles.shadow,
           {
-            justifyContent: "space-between",
             marginHorizontal: SIZES.base,
             flexDirection: "row",
             height: 100,
@@ -78,17 +52,20 @@ const Home = () => {
         ]}
         onPress={() => {
           navigation.navigate("DestinationDetail", {
-            name: item.name,
-            description: item.description,
-            img: item.img,
-            playLocate: item.playLocate,
-            about: item.about,
+            name: item.playland_name,
+            description: item.discription,
+            img: images.skiVilla,
+            latitude: item.latitude,
+            longitude: item.longitude,
             price: item.price,
+            discount: item.discount,
+            time_open: item.time_open,
+            time_close: item.time_close,
           });
         }}
       >
         <Image
-          source={item.img}
+          source={images.skiVilla}
           resizeMode="cover"
           style={{
             width: SIZES.width * 0.2,
@@ -98,7 +75,7 @@ const Home = () => {
         />
         <View style={{ marginLeft: SIZES.base * 2 }}>
           <Text style={{ marginTop: SIZES.base / 2, ...FONTS.h4 }}>
-            {item.name}
+            {item.playland_name}
           </Text>
           <Text
             style={{
@@ -107,7 +84,7 @@ const Home = () => {
               color: COLORS.gray,
             }}
           >
-            {item.description}
+            {item.discription}
           </Text>
         </View>
       </TouchableOpacity>
@@ -175,7 +152,7 @@ const Home = () => {
             horizontal={false}
             showsHorizontalScrollIndicator={false}
             data={destinations}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item._id.toString()}
             renderItem={({ item, index }) => renderDestinations(item, index)}
           />
         </View>

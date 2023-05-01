@@ -14,6 +14,7 @@ import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { phone, verification } from "../constants/images";
 import { COLORS, FONTS, SIZES } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const SignUpScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -53,6 +54,28 @@ const SignUpScreen = ({ navigation }) => {
         console.log(result);
         Alert.alert("Verification Successful", "You are now signed in!");
         await AsyncStorage.setItem("authId", result.user.uid); // Save the authentication ID to storage
+        const data = {
+          firebase_id: result.user.uid,
+          name: "Salman",
+          email: "salman@gmail.com",
+          phone: Number(result.user.phoneNumber),
+          latitude: 24.8607,
+          longitude: 67.0011,
+          image: "salmanimage",
+        };
+        fetch(
+          "http://starter-express-api-git-main-salman36.vercel.app/api/auth/appuser",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => console.log(data))
+          .catch((error) => console.error(error));
         gotoUserProfile();
       })
       .catch((error) => {

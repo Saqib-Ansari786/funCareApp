@@ -91,7 +91,16 @@ const IconLabel = ({ icon, label, onPress }) => {
 const DestinationDetail = ({ route, navigation }) => {
   // Render
 
-  const { name, about, description, playLocate, price } = route.params;
+  const {
+    name,
+    latitude,
+    longitude,
+    description,
+    discount,
+    price,
+    time_open,
+    time_close,
+  } = route.params;
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -138,9 +147,6 @@ const DestinationDetail = ({ route, navigation }) => {
               }}
             >
               <Text style={{ ...FONTS.h3 }}>{name}</Text>
-              <Text style={{ color: COLORS.gray, ...FONTS.body3 }}>
-                {playLocate}
-              </Text>
 
               <StarReview rate={4.5} />
             </View>
@@ -218,7 +224,7 @@ const DestinationDetail = ({ route, navigation }) => {
 
           <IconLabel icon={icons.parking} label="Parking" />
 
-          <IconLabel icon={icons.wind} label="Disc 50%" />
+          <IconLabel icon={icons.wind} label={`Disc ${discount}%`} />
         </View>
 
         {/* About */}
@@ -233,7 +239,7 @@ const DestinationDetail = ({ route, navigation }) => {
               ...FONTS.body3,
             }}
           >
-            {about}
+            Timing: {time_open} - {time_close}
           </Text>
         </View>
       </View>

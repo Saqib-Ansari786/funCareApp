@@ -33,6 +33,7 @@ export default function App() {
     const authId = await AsyncStorage.getItem("authId");
     if (authId) {
       // User is already authenticated, navigate to home screen
+      console.log(authId);
       setRoute("Home");
     } else {
       // User is not authenticated, navigate to sign up screen
