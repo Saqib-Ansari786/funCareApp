@@ -15,6 +15,8 @@ import MapLocation from "./screens/MapLocation";
 import SplashScreen from "./screens/SplashScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
+import { Provider as ReduxProvider, useDispatch } from "react-redux";
+import store from "./store/store";
 
 const theme = {
   ...DefaultTheme,
@@ -24,8 +26,9 @@ const theme = {
   },
 };
 
-export default function App() {
+function Main() {
   const [route, setRoute] = useState("onboarding1");
+  const dispatch = useDispatch();
   useEffect(() => {
     checkIfLoggedIn();
   }, []);
@@ -33,6 +36,7 @@ export default function App() {
     const authId = await AsyncStorage.getItem("authId");
     if (authId) {
       // User is already authenticated, navigate to home screen
+      dispatch({ type: "SET_USER_ID", payload: authId });
       console.log(authId);
       setRoute("Home");
     } else {
@@ -182,6 +186,14 @@ export default function App() {
     </Provider>
   );
 }
+
+export default App = () => {
+  return (
+    <ReduxProvider store={store}>
+      <Main />
+    </ReduxProvider>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

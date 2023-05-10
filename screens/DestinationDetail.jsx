@@ -1,10 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
-import { Button, IconButton } from "react-native-paper";
-
+import { useSelector } from "react-redux";
 const StarReview = ({ rate }) => {
   var starComponents = [];
   var fullStar = Math.floor(rate);
@@ -100,7 +98,41 @@ const DestinationDetail = ({ route, navigation }) => {
     price,
     time_open,
     time_close,
+    playlandId,
   } = route.params;
+  const userId = useSelector((state) => state.user.userId);
+
+  async function bookland() {
+    try {
+      const response = await fetch(
+        "http://starter-express-api-git-main-salman36.vercel.app/api/auth/businessbookinguser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            appuser_id: userId,
+            appplayland_id: playlandId,
+            bookingstatus: "pending",
+            amount: price,
+            method: "cash",
+            paymentstatus: "pending",
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        alert("Booking Successful");
+        navigation.navigate("MyBookings");
+      } else {
+        alert("Booking Failed");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -269,9 +301,7 @@ const DestinationDetail = ({ route, navigation }) => {
                 height: "80%",
                 marginHorizontal: SIZES.radius,
               }}
-              onPress={() => {
-                console.log("Booking on pressed");
-              }}
+              onPress={bookland}
             >
               <LinearGradient
                 style={[

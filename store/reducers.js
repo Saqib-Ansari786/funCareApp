@@ -1,18 +1,11 @@
-import { createReducer, createSlice } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 
-
-
-const initialState = {
-    value: 0,
-    status: "idle",
+const userInitialState = {
+  userId: null,
 };
 
-export const counterSlice = createSlice({
-    name: "counter",
-    initialState,
-    reducers: {
-        increment: (state) => {
-            state.value += 1;
-        }
-    },
+export const userReducer = createReducer(userInitialState, {
+  SET_USER_ID: (state, action) => {
+    state.userId = action.payload;
+  },
 });

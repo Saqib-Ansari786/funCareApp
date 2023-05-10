@@ -13,12 +13,13 @@ import { images, icons, COLORS, FONTS, SIZES } from "../constants";
 import { Video, AVPlaybackStatus } from "expo-av";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   // Dummy Data
   const navigation = useNavigation();
-
   const [destinations, setDestinations] = React.useState([]);
+  const { userId } = useSelector((state) => state.user);
 
   React.useEffect(() => {
     getData(
@@ -61,6 +62,7 @@ const Home = () => {
             discount: item.discount,
             time_open: item.time_open,
             time_close: item.time_close,
+            playlandId: item._id,
           });
         }}
       >
