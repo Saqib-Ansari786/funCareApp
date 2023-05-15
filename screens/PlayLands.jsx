@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, ImageBackground } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 import { Title, List, Divider } from "react-native-paper";
 import { images } from "../constants";
 
@@ -62,21 +68,26 @@ const PlaylandsScreen = () => {
   ]);
 
   return (
-    <View style={styles.container}>
-      <Title style={styles.heading}>Nearby playlands</Title>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Title style={styles.heading}>Nearby playlands </Title>
       <List.Section>
-        {playlands.map((playland) => {
-          Card(playland.name, playland.img);
-        })}
+        {playlands.map((playland) => (
+          <List.Item
+            key={playland.id}
+            title={playland.name}
+            left={(props) => (
+              <Card title={playland.name} image={playland.img} />
+            )}
+          />
+        ))}
       </List.Section>
       <Divider />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 10,
   },
   heading: {

@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.radius,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
     marginBottom: 20,
   },
   text: {

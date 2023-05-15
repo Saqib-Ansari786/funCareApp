@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Appbar } from "react-native-paper";
 
 const BookingScreen = () => {
   const [selectedTab, setSelectedTab] = useState("pending");
