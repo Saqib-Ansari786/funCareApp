@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { COLORS, FONTS, SIZES } from "../constants";
+import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 
 const userData = {
   name: "John Doe",
@@ -9,13 +11,33 @@ const userData = {
 };
 
 const UserProfileScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  const userId = useSelector((state) => state.user.userId);
+  const [userData, setUserData] = React.useState({});
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const response = await fetch(
+          `http://starter-express-api-git-main-salman36.vercel.app/api/auth/user/record/${userId}`
+        );
+        const responseData = await response.json();
+        setUserData(responseData.userRecord[0]);
+        console.log(responseData);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (isFocused) {
+      // Fetch or update data here
+      fetchUser();
+    }
+  }, [isFocused]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          style={styles.avatar}
-          source={{ uri: "https://randomuser.me/api/portraits/men/1.jpg" }}
-        />
+        <Image style={styles.avatar} source={{ uri: userData.image }} />
         <Text style={styles.name}>{userData.name}</Text>
         <Text style={styles.phone}>{userData.phone}</Text>
         <Text style={styles.email}>{userData.email}</Text>

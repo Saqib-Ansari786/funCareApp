@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,66 +6,47 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-
+import { useSelector } from "react-redux";
+` `;
 const BookingScreen = () => {
   const [selectedTab, setSelectedTab] = useState("pending");
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      title: "Product 1",
-      description: "Product 1 description",
-      price: 10,
-      status: "pending",
-    },
-    {
-      id: 2,
-      title: "Product 2",
-      description: "Product 2 description",
-      price: 20,
-      status: "confirmed",
-    },
-    {
-      id: 3,
-      title: "Product 3",
-      description: "Product 3 description",
-      price: 70,
-      status: "pending",
-    },
-    {
-      id: 4,
-      title: "Product 3",
-      description: "Product 3 description",
-      price: 70,
-      status: "pending",
-    },
-    {
-      id: 5,
-      title: "Product 3",
-      description: "Product 3 description",
-      price: 70,
-      status: "pending",
-    },
-  ]);
+  const { userId } = useSelector((state) => state.user);
+  const [bookingPlaylands, setBookingPlaylands] = useState([]);
+
+  useEffect(() => {
+    async function getBookingPlaylands() {
+      try {
+        const response = await fetch(
+          `http://starter-express-api-git-main-salman36.vercel.app/api/auth/userbooking/${userId}`
+        );
+        const responseData = await response.json();
+        setBookingPlaylands(responseData.userbooking);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getBookingPlaylands();
+  }, []);
 
   const handlePayment = (productId) => {
     // Implement payment logic here
-    const updatedProducts = products.map((product) => {
-      if (product.id === productId) {
+    const updatedProducts = bookingPlaylands.map((product) => {
+      if (product._id === productId) {
         return {
           ...product,
-          status: "confirmed",
+          bookingstatus: "confirmed",
         };
       }
       return product;
     });
-    setProducts(updatedProducts);
+    setBookingPlaylands(updatedProducts);
   };
-
-  const pendingProducts = products.filter(
-    (product) => product.status === "pending"
+  const pendingBookings = bookingPlaylands.filter(
+    (booking) => booking.bookingstatus === "pending"
   );
-  const confirmedProducts = products.filter(
-    (product) => product.status === "confirmed"
+  const confirmedBookings = bookingPlaylands.filter(
+    (booking) => booking.bookingstatus === "confirmed"
   );
 
   return (
@@ -86,16 +67,16 @@ const BookingScreen = () => {
       </View>
       {selectedTab === "pending" ? (
         <ScrollView>
-          {pendingProducts.map((product) => (
-            <View key={product.id} style={styles.productCard}>
-              <Text style={styles.productTitle}>{product.title}</Text>
-              <Text style={styles.productDescription}>
-                {product.description}
-              </Text>
-              <Text style={styles.productPrice}>{`$${product.price}`}</Text>
+          {pendingBookings.map((booking) => (
+            <View key={booking._id} style={styles.bookingCard}>
+              <Text style={styles.bookingTitle}>{booking.appplayland_id}</Text>
+              <Text
+                style={styles.bookingDescription}
+              >{`Amount: $${booking.amount}`}</Text>
+              <Text style={styles.bookingStatus}>{booking.bookingstatus}</Text>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={() => handlePayment(product.id)}
+                onPress={() => handlePayment(booking._id)}
               >
                 <Text style={styles.payButtonText}>Pay</Text>
               </TouchableOpacity>
@@ -104,13 +85,13 @@ const BookingScreen = () => {
         </ScrollView>
       ) : (
         <ScrollView>
-          {confirmedProducts.map((product) => (
-            <View key={product.id} style={styles.productCard}>
-              <Text style={styles.productTitle}>{product.title}</Text>
-              <Text style={styles.productDescription}>
-                {product.description}
-              </Text>
-              <Text style={styles.productPrice}>{`$${product.price}`}</Text>
+          {confirmedBookings.map((booking) => (
+            <View key={booking._id} style={styles.bookingCard}>
+              <Text style={styles.bookingTitle}>{booking.appplayland_id}</Text>
+              <Text
+                style={styles.bookingDescription}
+              >{`Amount: $${booking.amount}`}</Text>
+              <Text style={styles.bookingStatus}>{booking.bookingstatus}</Text>
               <Text style={styles.confirmedText}>Confirmed</Text>
             </View>
           ))}
@@ -145,22 +126,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  productCard: {
+  bookingCard: {
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 10,
     marginBottom: 10,
   },
-  productTitle: {
+  bookingTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 5,
   },
-  productDescription: {
+  bookingDescription: {
     fontSize: 16,
     marginBottom: 5,
   },
-  productPrice: {
+  bookingStatus: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,

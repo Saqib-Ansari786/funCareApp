@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Title, List, Divider } from "react-native-paper";
 import { images } from "../constants";
+import { useSelector } from "react-redux";
 
 const Card = ({ title, image }) => {
   return (
@@ -22,6 +23,7 @@ const Card = ({ title, image }) => {
 };
 
 const PlaylandsScreen = () => {
+  const { playland } = useSelector((state) => state.playland);
   const [playlands, setPlaylands] = React.useState([
     {
       id: 0,
@@ -69,14 +71,13 @@ const PlaylandsScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Title style={styles.heading}>Nearby playlands </Title>
+      <Title style={styles.heading}>All Playlands </Title>
       <List.Section>
-        {playlands.map((playland) => (
+        {playland.map((playland) => (
           <List.Item
-            key={playland.id}
-            title={playland.name}
+            key={playland._id}
             left={(props) => (
-              <Card title={playland.name} image={playland.img} />
+              <Card title={playland.playland_name} image={images.beach} />
             )}
           />
         ))}

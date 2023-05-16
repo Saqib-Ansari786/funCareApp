@@ -4,7 +4,11 @@ import { useFonts } from "expo-font";
 import Onboarding1 from "./screens/OnBoardingScreens/Onboarding1";
 import Onboarding2 from "./screens/OnBoardingScreens/Onboarding2";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  useNavigation,
+} from "@react-navigation/native";
 import { COLORS, SIZES, FONTS, icons } from "./constants";
 import Tabs from "./navigation/tabs";
 import DestinationDetail from "./screens/DestinationDetail";
@@ -17,6 +21,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { Provider as ReduxProvider, useDispatch } from "react-redux";
 import store from "./store/store";
+import Cashpayment from "./screens/Cashpayment";
 
 const theme = {
   ...DefaultTheme,
@@ -69,6 +74,14 @@ function Main() {
               headerShown: false,
             }}
           /> */}
+          <Stack.Screen
+            name="Cashpayment"
+            component={Cashpayment}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name="Onboarding1"
             component={Onboarding1}
@@ -128,30 +141,19 @@ function Main() {
           <Stack.Screen
             name="Home"
             component={Tabs}
-            options={{
+            options={({ navigation }) => ({
               title: null,
               headerStyle: {
                 backgroundColor: COLORS.white,
               },
-              headerLeft: () => (
-                <TouchableOpacity style={{ marginLeft: SIZES.padding }}>
-                  <Image
-                    source={icons.back}
-                    resizeMode="contain"
-                    style={{
-                      width: 25,
-                      height: 25,
-                    }}
-                  />
-                </TouchableOpacity>
-              ),
+
               headerRight: () => (
                 <TouchableOpacity
                   style={{ marginRight: SIZES.padding }}
-                  onPress={() => console.log("Menu")}
+                  onPress={() => navigation.navigate("UserProfile")}
                 >
                   <Image
-                    source={icons.menu}
+                    source={icons.user}
                     resizeMode="contain"
                     style={{
                       width: 25,
@@ -179,7 +181,7 @@ function Main() {
                 </View>
               ),
               headerTitleAlign: "center",
-            }}
+            })}
           />
         </Stack.Navigator>
       </NavigationContainer>

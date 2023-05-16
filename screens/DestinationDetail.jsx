@@ -3,6 +3,10 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
 import { useSelector } from "react-redux";
+import { ActivityIndicator } from "react-native";
+import { useState } from "react";
+import { Linking } from "react-native";
+
 const StarReview = ({ rate }) => {
   var starComponents = [];
   var fullStar = Math.floor(rate);
@@ -99,10 +103,13 @@ const DestinationDetail = ({ route, navigation }) => {
     time_open,
     time_close,
     playlandId,
+    location,
   } = route.params;
   const userId = useSelector((state) => state.user.userId);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function bookland() {
+    setIsLoading(true);
     try {
       const response = await fetch(
         "http://starter-express-api-git-main-salman36.vercel.app/api/auth/businessbookinguser",
@@ -124,15 +131,27 @@ const DestinationDetail = ({ route, navigation }) => {
       const data = await response.json();
       console.log(data);
       if (data.success) {
-        alert("Booking Successful");
-        navigation.navigate("MyBookings");
+        navigation.navigate("Cashpayment");
       } else {
         alert("Booking Failed");
       }
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   }
+  const handleOpenLink = async (url) => {
+    // Check if the device supports opening the given URL
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Open the URL in the default browser
+      await Linking.openURL(url);
+    } else {
+      console.log("Cannot open URL: " + url);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -250,11 +269,11 @@ const DestinationDetail = ({ route, navigation }) => {
         >
           <IconLabel
             icon={icons.villa}
-            label={name}
-            onPress={() => navigation.navigate("MapLocation")}
+            label={"Location"}
+            onPress={() => handleOpenLink(location)}
           />
 
-          <IconLabel icon={icons.parking} label="Parking" />
+          <IconLabel icon={icons.parking} label={`Rs. ${price}`} />
 
           <IconLabel icon={icons.wind} label={`Disc ${discount}%`} />
         </View>
@@ -294,33 +313,36 @@ const DestinationDetail = ({ route, navigation }) => {
             >
               <Text style={{ ...FONTS.h1 }}>{price}</Text>
             </View>
-
-            <TouchableOpacity
-              style={{
-                width: 130,
-                height: "80%",
-                marginHorizontal: SIZES.radius,
-              }}
-              onPress={bookland}
-            >
-              <LinearGradient
-                style={[
-                  {
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: 10,
-                  },
-                ]}
-                colors={["#46aeff", "#5884ff"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
+            {isLoading ? (
+              <ActivityIndicator size="large" color="#00ff00" />
+            ) : (
+              <TouchableOpacity
+                style={{
+                  width: 130,
+                  height: "80%",
+                  marginHorizontal: SIZES.radius,
+                }}
+                onPress={bookland}
               >
-                <Text style={{ color: COLORS.white, ...FONTS.h2 }}>
-                  BOOKING
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+                <LinearGradient
+                  style={[
+                    {
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: 10,
+                    },
+                  ]}
+                  colors={["#46aeff", "#5884ff"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Text style={{ color: COLORS.white, ...FONTS.h2 }}>
+                    BOOKING
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            )}
           </View>
         </LinearGradient>
       </View>

@@ -13,13 +13,14 @@ import { images, icons, COLORS, FONTS, SIZES } from "../constants";
 import { Video, AVPlaybackStatus } from "expo-av";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
   // Dummy Data
   const navigation = useNavigation();
   const [destinations, setDestinations] = React.useState([]);
   const { userId } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     getData(
@@ -33,6 +34,7 @@ const Home = () => {
       const responseData = await response.json();
       console.log(responseData);
       setDestinations(responseData);
+      dispatch({ type: "SET_PLAYLAND", payload: responseData });
     } catch (error) {
       console.error(error);
     }
@@ -63,6 +65,7 @@ const Home = () => {
             time_open: item.time_open,
             time_close: item.time_close,
             playlandId: item._id,
+            location: item.location,
           });
         }}
       >

@@ -1,23 +1,18 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import React, { useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Button, IconButton, TextInput } from "react-native-paper";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { COLORS, FONTS, SIZES } from "../constants";
+import * as ImagePicker from "expo-image-picker";
 
-const EditProfileScreen = ({ navigation }) => {
-  const [text, setText] = React.useState("");
-  const [username, setUsername] = useState("John Doe");
-  const [email, setEmail] = useState("johndoe@example.com");
-  const [avatarUrl, setAvatarUrl] = useState(
-    "https://randomuser.me/api/portraits/men/1.jpg"
-  );
+const EditProfileScreen = ({ navigation, route }) => {
+  const { name, email, image, firebase_id } = route.params;
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required("Username is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+  });
+  const [avatarUrl, setAvatarUrl] = React.useState(image);
 
   const handlePickImage = async () => {
     let permissionResult;
@@ -42,10 +37,42 @@ const EditProfileScreen = ({ navigation }) => {
       setAvatarUrl(result.assets[0].uri);
     }
   };
+  async function updateUser(username, email, avatarUrl, firebase_id) {
+    try {
+      console.log(avatarUrl);
+      const response = await fetch(
+        `http://starter-express-api-git-main-salman36.vercel.app/api/auth/appuser`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firebase_id: firebase_id,
+            name: username,
+            email: email,
+            image: avatarUrl,
+          }),
+        }
+      );
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  const handleSaveChanges = () => {
-    // Your code to save changes here
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: name,
+      email: email,
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      updateUser(values.username, values.email, avatarUrl, firebase_id);
+      navigation.goBack();
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -61,20 +88,30 @@ const EditProfileScreen = ({ navigation }) => {
         <TextInput
           mode="outlined"
           label="Username"
-          activeOutlineColor={COLORS.primary}
+          value={formik.values.username}
+          onChangeText={formik.handleChange("username")}
+          onBlur={formik.handleBlur("username")}
+          error={formik.touched.username && formik.errors.username}
           right={<TextInput.Icon icon="face-man-profile" />}
         />
+        {formik.touched.username && formik.errors.username && (
+          <Text style={styles.errorText}>{formik.errors.username}</Text>
+        )}
         <TextInput
           mode="outlined"
           label="Email"
-          activeOutlineColor={COLORS.primary}
+          value={formik.values.email}
+          onChangeText={formik.handleChange("email")}
+          onBlur={formik.handleBlur("email")}
+          error={formik.touched.email && formik.errors.email}
           right={<TextInput.Icon icon="email" />}
         />
+        {formik.touched.email && formik.errors.email && (
+          <Text style={styles.errorText}>{formik.errors.email}</Text>
+        )}
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Home")}
-      >
+
+      <TouchableOpacity style={styles.button} onPress={formik.handleSubmit}>
         <Text style={styles.buttonText}>Submit Changes</Text>
       </TouchableOpacity>
     </View>
@@ -105,7 +142,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "80%",
   },
-
   button: {
     backgroundColor: COLORS.primary,
     paddingHorizontal: SIZES.padding,
@@ -117,6 +153,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     ...FONTS.h3,
     letterSpacing: 1,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 5,
   },
 });
 

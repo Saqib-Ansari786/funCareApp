@@ -30,18 +30,7 @@ const Tabs = () => {
                   }}
                 />
               );
-            case "PlayLands":
-              return (
-                <Image
-                  source={icons.play}
-                  resizeMode="contain"
-                  style={{
-                    tintColor: tintColor,
-                    width: 50,
-                    height: 50,
-                  }}
-                />
-              );
+
             case "MyBookings":
               return (
                 <Image
@@ -71,7 +60,6 @@ const Tabs = () => {
       })}
     >
       <Tab.Screen name="HomeScreen" component={Home} />
-      <Tab.Screen name="PlayLands" component={PlayLands} />
       <Tab.Screen name="MyBookings" component={MyBookings} />
       <Tab.Screen name="UserProfile" component={UserProfileScreen} />
     </Tab.Navigator>
