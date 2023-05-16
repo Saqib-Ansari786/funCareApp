@@ -172,15 +172,19 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   shadow: {
-    shadowColor: COLORS.black,
+    shadowColor: "#000",
     shadowOffset: {
-      width: 5,
-      height: 6,
+      width: 0,
+      height: 3,
     },
-    shadowOpacity: 0.85,
-    shadowRadius: 4.84,
-
-    elevation: 70,
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 1,
+    borderRadius: 20,
+    marginHorizontal: SIZES.base,
+    marginVertical: SIZES.base,
+    backgroundColor: COLORS.white,
+    overflow: "hidden",
   },
 });
 

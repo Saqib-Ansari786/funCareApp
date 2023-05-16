@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { COLORS, FONTS, SIZES } from "../constants";
+import Header from "../components/Header";
 
 const BookingScreen = ({ navigation }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -30,6 +31,7 @@ const BookingScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Header />
       <Text style={styles.title}>Payment Method</Text>
       <Text style={styles.subTitle}>Select your payment method</Text>
 
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
   title: {
     ...FONTS.h2,
     marginBottom: SIZES.padding,
+    marginTop: 90,
   },
   subTitle: {
     ...FONTS.h3,
