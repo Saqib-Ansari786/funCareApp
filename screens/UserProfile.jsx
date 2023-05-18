@@ -37,7 +37,10 @@ const UserProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image style={styles.avatar} source={{ uri: userData.image }} />
+        <Image
+          style={styles.avatar}
+          source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+        />
         <Text style={styles.name}>{userData.name}</Text>
         <Text style={styles.phone}>{userData.phone}</Text>
         <Text style={styles.email}>{userData.email}</Text>
