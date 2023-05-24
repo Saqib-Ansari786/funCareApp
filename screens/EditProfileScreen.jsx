@@ -37,7 +37,7 @@ const EditProfileScreen = ({ navigation, route }) => {
       setAvatarUrl(result.assets[0].uri);
     }
   };
-  async function updateUser(username, email, avatarUrl, firebase_id) {
+  async function updateUser(username, email, firebase_id) {
     try {
       console.log(avatarUrl);
       const response = await fetch(

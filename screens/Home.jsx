@@ -14,6 +14,7 @@ import { Video, AVPlaybackStatus } from "expo-av";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
+import { ActivityIndicator } from "react-native";
 
 const Home = () => {
   // Dummy Data
@@ -21,6 +22,7 @@ const Home = () => {
   const [destinations, setDestinations] = React.useState([]);
   const { userId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     getData(
@@ -30,6 +32,7 @@ const Home = () => {
 
   async function getData(url) {
     try {
+      setLoading(true);
       const response = await fetch(url);
       const responseData = await response.json();
       console.log(responseData);
@@ -38,6 +41,7 @@ const Home = () => {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   }
 
   function renderDestinations(item, index) {
@@ -146,21 +150,25 @@ const Home = () => {
         >
           Nearby PlayLands
         </Text>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <FlatList
-            horizontal={false}
-            showsHorizontalScrollIndicator={false}
-            data={destinations}
-            keyExtractor={(item) => item._id.toString()}
-            renderItem={({ item, index }) => renderDestinations(item, index)}
-          />
-        </View>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FlatList
+              horizontal={false}
+              showsHorizontalScrollIndicator={false}
+              data={destinations}
+              keyExtractor={(item) => item._id.toString()}
+              renderItem={({ item, index }) => renderDestinations(item, index)}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

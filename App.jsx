@@ -64,7 +64,34 @@ function Main() {
   return (
     <Provider>
       <NavigationContainer theme={theme}>
-        <Stack.Navigator initialRouteName={route}>
+        <Stack.Navigator
+          initialRouteName={route}
+          screenOptions={() => ({
+            headerTitle: () => (
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                }}
+              >
+                <Image
+                  source={icons.main}
+                  resizeMode="cover"
+                  style={{
+                    width: 200,
+                    height: 200,
+                  }}
+                />
+              </View>
+            ),
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: COLORS.black,
+            },
+            headerTintColor: COLORS.white,
+          })}
+        >
           {/* Screens */}
           {/* <Stack.Screen
             name="Splash"
@@ -105,12 +132,9 @@ function Main() {
           <Stack.Screen
             name="Signup"
             component={SignUpScreen}
-            options={{
-              title: null,
-              headerStyle: {
-                backgroundColor: COLORS.white,
-              },
-            }}
+            options={() => ({
+              headerLeft: null,
+            })}
           />
           <Stack.Screen
             name="DestinationDetail"
@@ -142,45 +166,7 @@ function Main() {
             name="Home"
             component={Tabs}
             options={({ navigation }) => ({
-              title: null,
-              headerStyle: {
-                backgroundColor: COLORS.white,
-              },
-
-              headerRight: () => (
-                <TouchableOpacity
-                  style={{ marginRight: SIZES.padding }}
-                  onPress={() => navigation.navigate("UserProfile")}
-                >
-                  <Image
-                    source={icons.user}
-                    resizeMode="contain"
-                    style={{
-                      width: 25,
-                      height: 25,
-                    }}
-                  />
-                </TouchableOpacity>
-              ),
-              headerTitle: () => (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                  }}
-                >
-                  <Image
-                    source={icons.main}
-                    resizeMode="cover"
-                    style={{
-                      width: 200,
-                      height: 200,
-                    }}
-                  />
-                </View>
-              ),
-              headerTitleAlign: "center",
+              headerLeft: null,
             })}
           />
         </Stack.Navigator>

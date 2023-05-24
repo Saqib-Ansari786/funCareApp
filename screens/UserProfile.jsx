@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { COLORS, FONTS, SIZES } from "../constants";
 import { useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
+import { ActivityIndicator } from "react-native";
 
 const userData = {
   name: "John Doe",
@@ -14,10 +15,12 @@ const UserProfileScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
   const userId = useSelector((state) => state.user.userId);
   const [userData, setUserData] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     async function fetchUser() {
       try {
+        setIsLoading(true);
         const response = await fetch(
           `http://starter-express-api-git-main-salman36.vercel.app/api/auth/user/record/${userId}`
         );
@@ -27,6 +30,7 @@ const UserProfileScreen = ({ navigation }) => {
       } catch (error) {
         console.error(error);
       }
+      setIsLoading(false);
     }
     if (isFocused) {
       // Fetch or update data here
@@ -36,21 +40,27 @@ const UserProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          style={styles.avatar}
-          source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-        />
-        <Text style={styles.name}>{userData.name}</Text>
-        <Text style={styles.phone}>{userData.phone}</Text>
-        <Text style={styles.email}>{userData.email}</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("EditProfile", userData)}
-      >
-        <Text style={styles.buttonText}>Edit Profile</Text>
-      </TouchableOpacity>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      ) : (
+        <>
+          <View style={styles.header}>
+            <Image
+              style={styles.avatar}
+              source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            />
+            <Text style={styles.name}>{userData.name}</Text>
+            <Text style={styles.phone}>{userData.phone}</Text>
+            <Text style={styles.email}>{userData.email}</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("EditProfile", userData)}
+          >
+            <Text style={styles.buttonText}>Edit Profile</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };

@@ -7,15 +7,18 @@ import {
   ScrollView,
 } from "react-native";
 import { useSelector } from "react-redux";
-` `;
+import { ActivityIndicator } from "react-native";
+
 const BookingScreen = () => {
   const [selectedTab, setSelectedTab] = useState("pending");
   const { userId } = useSelector((state) => state.user);
   const [bookingPlaylands, setBookingPlaylands] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getBookingPlaylands() {
       try {
+        setLoading(true);
         const response = await fetch(
           `http://starter-express-api-git-main-salman36.vercel.app/api/auth/userbooking/${userId}`
         );
@@ -24,6 +27,7 @@ const BookingScreen = () => {
       } catch (error) {
         console.error(error);
       }
+      setLoading(false);
     }
 
     getBookingPlaylands();
@@ -51,51 +55,71 @@ const BookingScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.tabs}>
-        <TouchableOpacity
-          style={[styles.tab, selectedTab === "pending" && styles.activeTab]}
-          onPress={() => setSelectedTab("pending")}
-        >
-          <Text style={styles.tabText}>Pending</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, selectedTab === "confirmed" && styles.activeTab]}
-          onPress={() => setSelectedTab("confirmed")}
-        >
-          <Text style={styles.tabText}>Confirmed</Text>
-        </TouchableOpacity>
-      </View>
-      {selectedTab === "pending" ? (
-        <ScrollView>
-          {pendingBookings.map((booking) => (
-            <View key={booking._id} style={styles.bookingCard}>
-              <Text style={styles.bookingTitle}>{booking.appplayland_id}</Text>
-              <Text
-                style={styles.bookingDescription}
-              >{`Amount: $${booking.amount}`}</Text>
-              <Text style={styles.bookingStatus}>{booking.bookingstatus}</Text>
-              <TouchableOpacity
-                style={styles.payButton}
-                onPress={() => handlePayment(booking._id)}
-              >
-                <Text style={styles.payButtonText}>Pay</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </ScrollView>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <ScrollView>
-          {confirmedBookings.map((booking) => (
-            <View key={booking._id} style={styles.bookingCard}>
-              <Text style={styles.bookingTitle}>{booking.appplayland_id}</Text>
-              <Text
-                style={styles.bookingDescription}
-              >{`Amount: $${booking.amount}`}</Text>
-              <Text style={styles.bookingStatus}>{booking.bookingstatus}</Text>
-              <Text style={styles.confirmedText}>Confirmed</Text>
-            </View>
-          ))}
-        </ScrollView>
+        <>
+          <View style={styles.tabs}>
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                selectedTab === "pending" && styles.activeTab,
+              ]}
+              onPress={() => setSelectedTab("pending")}
+            >
+              <Text style={styles.tabText}>Pending</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                selectedTab === "confirmed" && styles.activeTab,
+              ]}
+              onPress={() => setSelectedTab("confirmed")}
+            >
+              <Text style={styles.tabText}>Confirmed</Text>
+            </TouchableOpacity>
+          </View>
+          {selectedTab === "pending" ? (
+            <ScrollView>
+              {pendingBookings.map((booking) => (
+                <View key={booking._id} style={styles.bookingCard}>
+                  <Text style={styles.bookingTitle}>
+                    {booking.appplayland_id}
+                  </Text>
+                  <Text
+                    style={styles.bookingDescription}
+                  >{`Amount: $${booking.amount}`}</Text>
+                  <Text style={styles.bookingStatus}>
+                    {booking.bookingstatus}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.payButton}
+                    onPress={() => handlePayment(booking._id)}
+                  >
+                    <Text style={styles.payButtonText}>Pay</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+          ) : (
+            <ScrollView>
+              {confirmedBookings.map((booking) => (
+                <View key={booking._id} style={styles.bookingCard}>
+                  <Text style={styles.bookingTitle}>
+                    {booking.appplayland_id}
+                  </Text>
+                  <Text
+                    style={styles.bookingDescription}
+                  >{`Amount: $${booking.amount}`}</Text>
+                  <Text style={styles.bookingStatus}>
+                    {booking.bookingstatus}
+                  </Text>
+                  <Text style={styles.confirmedText}>Confirmed</Text>
+                </View>
+              ))}
+            </ScrollView>
+          )}
+        </>
       )}
     </View>
   );
