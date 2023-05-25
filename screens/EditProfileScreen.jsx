@@ -5,14 +5,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { COLORS, FONTS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
+import Header from "../components/Header";
+import { useDispatch } from "react-redux";
 
 const EditProfileScreen = ({ navigation, route }) => {
-  const { name, email, image, firebase_id } = route.params;
+  const { name, email, image, firebase_id, phone } = route.params;
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
   });
   const [avatarUrl, setAvatarUrl] = React.useState(image);
+  const dispatch = useDispatch();
 
   const handlePickImage = async () => {
     let permissionResult;
@@ -37,7 +40,7 @@ const EditProfileScreen = ({ navigation, route }) => {
       setAvatarUrl(result.assets[0].uri);
     }
   };
-  async function updateUser(username, email, firebase_id) {
+  async function updateUser(username, email) {
     try {
       console.log(avatarUrl);
       const response = await fetch(
@@ -52,11 +55,13 @@ const EditProfileScreen = ({ navigation, route }) => {
             name: username,
             email: email,
             image: avatarUrl,
+            phone: phone,
           }),
         }
       );
       const responseData = await response.json();
       console.log(responseData);
+      dispatch({ type: "SET_USER_REQUEST_FLAG", payload: true });
     } catch (error) {
       console.log(error);
     }
@@ -69,13 +74,14 @@ const EditProfileScreen = ({ navigation, route }) => {
     },
     validationSchema,
     onSubmit: (values) => {
-      updateUser(values.username, values.email, avatarUrl, firebase_id);
+      updateUser(values.username, values.email);
       navigation.goBack();
     },
   });
 
   return (
     <View style={styles.container}>
+      <Header />
       <TouchableOpacity
         style={styles.avatarContainer}
         onPress={handlePickImage}
@@ -130,13 +136,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 300,
+    height: 300,
+    borderRadius: 80,
     marginBottom: 10,
   },
   changeAvatar: {
-    fontSize: 18,
+    ...FONTS.h3,
     color: COLORS.primary,
   },
   inputContainer: {

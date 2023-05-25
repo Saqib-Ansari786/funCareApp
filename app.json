@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/joyland.jpg",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.saqibansari.funCareApp"

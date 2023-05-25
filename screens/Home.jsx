@@ -35,7 +35,6 @@ const Home = () => {
       setLoading(true);
       const response = await fetch(url);
       const responseData = await response.json();
-      console.log(responseData);
       setDestinations(responseData);
       dispatch({ type: "SET_PLAYLAND", payload: responseData });
     } catch (error) {

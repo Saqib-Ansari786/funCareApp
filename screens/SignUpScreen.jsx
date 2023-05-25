@@ -79,7 +79,7 @@ const SignUpScreen = ({ navigation }) => {
           phone: result.user.phoneNumber,
           latitude: "24.8607",
           longitude: "67.0011",
-          image: "salmanimage",
+          image: "https://randomuser.me/api/portraits/men/36.jpg",
           location: "karachi",
         };
         try {
@@ -167,7 +167,15 @@ const SignUpScreen = ({ navigation }) => {
               </View>
 
               {touched.phoneNumber && errors.phoneNumber && (
-                <Text style={{ color: "red" }}>{errors.phoneNumber}</Text>
+                <Text
+                  style={{
+                    ...FONTS.body4,
+                    color: "red",
+                    marginLeft: SIZES.radius,
+                  }}
+                >
+                  {errors.phoneNumber}
+                </Text>
               )}
 
               <TouchableOpacity onPress={handleSubmit} style={styles.button}>

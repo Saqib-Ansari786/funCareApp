@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { COLORS, FONTS, SIZES } from "../constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native";
 
@@ -16,6 +16,8 @@ const UserProfileScreen = ({ navigation }) => {
   const userId = useSelector((state) => state.user.userId);
   const [userData, setUserData] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
+  const { userRequest } = useSelector((state) => state.request);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchUser() {
@@ -26,17 +28,15 @@ const UserProfileScreen = ({ navigation }) => {
         );
         const responseData = await response.json();
         setUserData(responseData.userRecord[0]);
-        console.log(responseData);
+        dispatch({ type: "SET_USER_REQUEST_FLAG", payload: false });
       } catch (error) {
         console.error(error);
       }
       setIsLoading(false);
     }
-    if (isFocused) {
-      // Fetch or update data here
-      fetchUser();
-    }
-  }, [isFocused]);
+    // Fetch or update data here
+    fetchUser();
+  }, [userRequest]);
 
   return (
     <View style={styles.container}>
@@ -45,10 +45,7 @@ const UserProfileScreen = ({ navigation }) => {
       ) : (
         <>
           <View style={styles.header}>
-            <Image
-              style={styles.avatar}
-              source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-            />
+            <Image style={styles.avatar} source={{ uri: userData.image }} />
             <Text style={styles.name}>{userData.name}</Text>
             <Text style={styles.phone}>{userData.phone}</Text>
             <Text style={styles.email}>{userData.email}</Text>
@@ -74,13 +71,13 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   avatar: {
-    width: 180,
-    height: 180,
-    borderRadius: 100,
-    marginBottom: 10,
+    width: 280,
+    height: 280,
+    borderRadius: 70,
+    marginBottom: 25,
   },
   name: {
     marginBottom: 5,

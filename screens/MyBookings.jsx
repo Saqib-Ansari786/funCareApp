@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator } from "react-native";
 
 const BookingScreen = () => {
@@ -14,6 +14,8 @@ const BookingScreen = () => {
   const { userId } = useSelector((state) => state.user);
   const [bookingPlaylands, setBookingPlaylands] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { bookingRequest } = useSelector((state) => state.request);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getBookingPlaylands() {
@@ -31,7 +33,9 @@ const BookingScreen = () => {
     }
 
     getBookingPlaylands();
-  }, []);
+
+    dispatch({ type: "SET_BOOKING_REQUEST_FLAG", payload: false });
+  }, [bookingRequest === true]);
 
   const handlePayment = (productId) => {
     // Implement payment logic here

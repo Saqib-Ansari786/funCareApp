@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator } from "react-native";
 import { useState } from "react";
 import { Linking } from "react-native";
@@ -107,6 +107,7 @@ const DestinationDetail = ({ route, navigation }) => {
   } = route.params;
   const userId = useSelector((state) => state.user.userId);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   async function bookland() {
     setIsLoading(true);
@@ -131,6 +132,7 @@ const DestinationDetail = ({ route, navigation }) => {
       const data = await response.json();
       console.log(data);
       if (data.success) {
+        dispatch({ type: "SET_BOOKING_REQUEST_FLAG", payload: true });
         navigation.navigate("Cashpayment");
       } else {
         alert("Booking Failed");

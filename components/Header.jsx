@@ -1,8 +1,10 @@
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { icons } from "../constants";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header() {
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -17,27 +19,11 @@ export default function Header() {
       <View style={{ flex: 1 }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Home");
+            navigation.goBack();
           }}
         >
           <Image
             source={icons.back}
-            resizeMode="cover"
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={{ flex: 1, alignItems: "flex-end" }}>
-        <TouchableOpacity
-          onPress={() => {
-            console.log("Menu on pressed");
-          }}
-        >
-          <Image
-            source={icons.menu}
             resizeMode="cover"
             style={{
               width: 30,
