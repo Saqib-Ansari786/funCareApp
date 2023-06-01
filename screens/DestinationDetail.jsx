@@ -239,22 +239,6 @@ const DestinationDetail = ({ route, navigation }) => {
               />
             </TouchableOpacity>
           </View>
-          <View style={{ flex: 1, alignItems: "flex-end" }}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log("Menu on pressed");
-              }}
-            >
-              <Image
-                source={icons.menu}
-                resizeMode="cover"
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
 
