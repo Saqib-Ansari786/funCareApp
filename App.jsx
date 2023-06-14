@@ -22,6 +22,7 @@ import { useEffect } from "react";
 import { Provider as ReduxProvider, useDispatch } from "react-redux";
 import store from "./store/store";
 import Cashpayment from "./screens/Cashpayment";
+import UserProfileScreen from "./screens/UserProfile";
 
 const theme = {
   ...DefaultTheme,
@@ -160,6 +161,14 @@ function Main() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="UserProfileScreen"
+            component={UserProfileScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
 
           {/* Tabs */}
           <Stack.Screen
@@ -167,6 +176,27 @@ function Main() {
             component={Tabs}
             options={({ navigation }) => ({
               headerLeft: null,
+              headerRight: () => (
+                <TouchableOpacity
+                  style={{
+                    width: 50,
+                    height: 50,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => navigation.navigate("UserProfileScreen")}
+                >
+                  <Image
+                    source={icons.user}
+                    resizeMode="contain"
+                    style={{
+                      width: 30,
+                      height: 30,
+                      tintColor: COLORS.white,
+                    }}
+                  />
+                </TouchableOpacity>
+              ),
             })}
           />
         </Stack.Navigator>

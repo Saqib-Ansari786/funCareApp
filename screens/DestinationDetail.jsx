@@ -7,69 +7,6 @@ import { ActivityIndicator } from "react-native";
 import { useState } from "react";
 import { Linking } from "react-native";
 
-const StarReview = ({ rate }) => {
-  var starComponents = [];
-  var fullStar = Math.floor(rate);
-  var noStar = Math.floor(5 - rate);
-  var halfStar = 5 - fullStar - noStar;
-
-  // Full Star
-  for (var i = 0; i < fullStar; i++) {
-    starComponents.push(
-      <Image
-        key={`full-${i}`}
-        source={icons.starFull}
-        resizeMode="cover"
-        style={{
-          width: 20,
-          height: 20,
-        }}
-      />
-    );
-  }
-
-  // Half Star
-  for (var i = 0; i < halfStar; i++) {
-    starComponents.push(
-      <Image
-        key={`half-${i}`}
-        source={icons.starHalf}
-        resizeMode="cover"
-        style={{
-          width: 20,
-          height: 20,
-        }}
-      />
-    );
-  }
-
-  // No Star
-  for (var i = 0; i < noStar; i++) {
-    starComponents.push(
-      <Image
-        key={`empty-${i}`}
-        source={icons.starEmpty}
-        resizeMode="cover"
-        style={{
-          width: 20,
-          height: 20,
-        }}
-      />
-    );
-  }
-
-  return (
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
-      {starComponents}
-      <Text
-        style={{ marginLeft: SIZES.base, color: COLORS.gray, ...FONTS.body3 }}
-      >
-        {rate}
-      </Text>
-    </View>
-  );
-};
-
 const IconLabel = ({ icon, label, onPress }) => {
   return (
     <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
@@ -186,8 +123,8 @@ const DestinationDetail = ({ route, navigation }) => {
                 source={images.joyland}
                 resizeMode="cover"
                 style={{
-                  width: 70,
-                  height: 70,
+                  width: 60,
+                  height: 60,
                   borderRadius: 15,
                 }}
               />
@@ -196,12 +133,10 @@ const DestinationDetail = ({ route, navigation }) => {
             <View
               style={{
                 marginHorizontal: SIZES.radius,
-                justifyContent: "space-around",
+                justifyContent: "center",
               }}
             >
-              <Text style={{ ...FONTS.h3 }}>{name}</Text>
-
-              <StarReview rate={4.5} />
+              <Text style={{ ...FONTS.h2 }}>{name}</Text>
             </View>
           </View>
 

@@ -3,9 +3,8 @@ import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import { icons, COLORS } from "../constants";
-import PlayLands from "../screens/PlayLands";
 import MyBookings from "../screens/MyBookings";
-import UserProfileScreen from "../screens/UserProfile";
+import Helpfaq from "../screens/Helpfaq";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,10 +47,10 @@ const Tabs = () => {
                   }}
                 />
               );
-            case "UserProfile":
+            case "HelpCenter":
               return (
                 <Image
-                  source={icons.user}
+                  source={icons.faq}
                   resizeMode="contain"
                   style={{
                     tintColor: tintColor,
@@ -66,7 +65,7 @@ const Tabs = () => {
     >
       <Tab.Screen name="HomeScreen" component={Home} />
       <Tab.Screen name="MyBookings" component={MyBookings} />
-      <Tab.Screen name="UserProfile" component={UserProfileScreen} />
+      <Tab.Screen name="HelpCenter" component={Helpfaq} />
     </Tab.Navigator>
   );
 };

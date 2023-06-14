@@ -23,6 +23,7 @@ export const arrow = require("../assets/icons/arrow.png");
 export const play = require("../assets/icons/playicon.png");
 export const main = require("../assets/icons/main.png");
 export const location = require("../assets/icons/location.png");
+export const faq = require("../assets/icons/faq_icon.png");
 
 export default {
   airplane,
@@ -50,4 +51,5 @@ export default {
   play,
   main,
   location,
+  faq,
 };

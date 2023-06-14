@@ -4,6 +4,7 @@ import { COLORS, FONTS, SIZES } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native";
+import Header from "../components/Header";
 
 const userData = {
   name: "John Doe",
@@ -40,6 +41,7 @@ const UserProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Header />
       {isLoading ? (
         <ActivityIndicator size="large" color={COLORS.primary} />
       ) : (
