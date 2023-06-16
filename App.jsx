@@ -23,6 +23,7 @@ import { Provider as ReduxProvider, useDispatch } from "react-redux";
 import store from "./store/store";
 import Cashpayment from "./screens/Cashpayment";
 import UserProfileScreen from "./screens/UserProfile";
+import Onboarding3 from "./screens/OnBoardingScreens/Onboarding3";
 
 const theme = {
   ...DefaultTheme,
@@ -33,7 +34,7 @@ const theme = {
 };
 
 function Main() {
-  const [route, setRoute] = useState("onboarding1");
+  const [route, setRoute] = useState("Onboarding3");
   const dispatch = useDispatch();
   useEffect(() => {
     checkIfLoggedIn();
@@ -116,8 +117,9 @@ function Main() {
             options={{
               title: null,
               headerStyle: {
-                backgroundColor: COLORS.white,
+                backgroundColor: COLORS.black,
               },
+              headerLeft: null,
             }}
           />
           <Stack.Screen
@@ -126,8 +128,17 @@ function Main() {
             options={{
               title: null,
               headerStyle: {
-                backgroundColor: COLORS.white,
+                backgroundColor: COLORS.black,
               },
+              headerLeft: null,
+            }}
+          />
+          <Stack.Screen
+            name="Onboarding3"
+            component={Onboarding3}
+            options={{
+              title: null,
+              headerShown: false,
             }}
           />
           <Stack.Screen
