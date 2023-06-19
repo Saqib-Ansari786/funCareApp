@@ -8,8 +8,10 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const BookingScreen = () => {
+  const navigation = useNavigation();
   const [selectedTab, setSelectedTab] = useState("pending");
   const { userId } = useSelector((state) => state.user);
   const [bookingPlaylands, setBookingPlaylands] = useState([]);
@@ -37,19 +39,17 @@ const BookingScreen = () => {
     dispatch({ type: "SET_BOOKING_REQUEST_FLAG", payload: false });
   }, [bookingRequest === true]);
 
-  const handlePayment = (productId) => {
+  const handlePayment = (productId, amount) => {
     // Implement payment logic here
-    const updatedProducts = bookingPlaylands.map((product) => {
-      if (product._id === productId) {
-        return {
-          ...product,
-          bookingstatus: "confirmed",
-        };
-      }
-      return product;
+
+    console.log(productId, amount);
+
+    navigation.navigate("Cashpayment", {
+      productId,
+      amount,
     });
-    setBookingPlaylands(updatedProducts);
   };
+
   const pendingBookings = bookingPlaylands.filter(
     (booking) => booking.bookingstatus === "pending"
   );
@@ -92,13 +92,13 @@ const BookingScreen = () => {
                   </Text>
                   <Text
                     style={styles.bookingDescription}
-                  >{`Amount: $${booking.amount}`}</Text>
+                  >{`Amount: Rs.${booking.amount}`}</Text>
                   <Text style={styles.bookingStatus}>
                     {booking.bookingstatus}
                   </Text>
                   <TouchableOpacity
                     style={styles.payButton}
-                    onPress={() => handlePayment(booking._id)}
+                    onPress={() => handlePayment(booking._id, booking.amount)}
                   >
                     <Text style={styles.payButtonText}>Pay</Text>
                   </TouchableOpacity>
@@ -114,7 +114,7 @@ const BookingScreen = () => {
                   </Text>
                   <Text
                     style={styles.bookingDescription}
-                  >{`Amount: $${booking.amount}`}</Text>
+                  >{`Amount: Rs.${booking.amount}`}</Text>
                   <Text style={styles.bookingStatus}>
                     {booking.bookingstatus}
                   </Text>

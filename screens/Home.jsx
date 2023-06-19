@@ -37,6 +37,7 @@ const Home = () => {
       const responseData = await response.json();
       setDestinations(responseData);
       dispatch({ type: "SET_PLAYLAND", payload: responseData });
+      console.log(responseData);
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +74,7 @@ const Home = () => {
         }}
       >
         <Image
-          source={images.skiVilla}
+          source={{ uri: item.path_url }}
           resizeMode="cover"
           style={{
             width: SIZES.width * 0.2,

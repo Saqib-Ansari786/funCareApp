@@ -70,7 +70,7 @@ const DestinationDetail = ({ route, navigation }) => {
       console.log(data);
       if (data.success) {
         dispatch({ type: "SET_BOOKING_REQUEST_FLAG", payload: true });
-        navigation.navigate("Cashpayment");
+        navigation.navigate("MyBookings");
       } else {
         alert("Booking Failed");
       }

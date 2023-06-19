@@ -24,6 +24,7 @@ import store from "./store/store";
 import Cashpayment from "./screens/Cashpayment";
 import UserProfileScreen from "./screens/UserProfile";
 import Onboarding3 from "./screens/OnBoardingScreens/Onboarding3";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 const theme = {
   ...DefaultTheme,
@@ -219,7 +220,13 @@ function Main() {
 export default App = () => {
   return (
     <ReduxProvider store={store}>
-      <Main />
+      <StripeProvider
+        publishableKey="pk_test_51NEDnZD7q9cT09mV6Bjmfbw2bCxFBBpORXAx2bErfqJAJrNbTTCNg3jdeUUTBrmV9QJBrDZLcSBIgJJXkHfWM6wF00gpSsThTc"
+        urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+        merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
+      >
+        <Main />
+      </StripeProvider>
     </ReduxProvider>
   );
 };
