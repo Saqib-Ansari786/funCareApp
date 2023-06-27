@@ -90,6 +90,7 @@ const BookingScreen = () => {
                   <Text style={styles.bookingTitle}>
                     {booking.appplayland_id}
                   </Text>
+                  <Text style={styles.bookingTitle}>{booking._id}</Text>
                   <Text
                     style={styles.bookingDescription}
                   >{`Amount: Rs.${booking.amount}`}</Text>

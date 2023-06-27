@@ -1,15 +1,24 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { Formik } from "formik";
 import { object, string } from "yup";
 import { CardField, createToken, useStripe } from "@stripe/stripe-react-native";
 import { Button, TextInput } from "react-native-paper";
 import { COLORS, FONTS, SIZES } from "../constants";
 import Header from "../components/Header";
+import { useDispatch } from "react-redux";
 
 const BookingScreen = ({ navigation, route }) => {
   const [cardDetails, setCardDetails] = React.useState(null);
   const { amount, productId } = route.params;
+  const [loading, setLoading] = React.useState(false);
+  const dispatch = useDispatch();
 
   const fetchCardDetails = (cardDetail) => {
     if (cardDetail.complete) {
@@ -28,43 +37,60 @@ const BookingScreen = ({ navigation, route }) => {
 
     if (cardDetails) {
       try {
+        setLoading(true);
         const resToken = await createToken({ ...cardDetails, type: "Card" });
-        console.log("Card Token", resToken);
+        console.log(resToken.token);
 
-        const res = await fetch("http://localhost:3000/charge", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            amount: amount,
-            stripeEmail: values.email,
-            stripeToken: resToken.id,
-            name: values.name,
-          }),
-        });
-
-        const data = await res.json();
-        console.log("Response from server", data);
-
-        if (data.status === "succeeded") {
-          alert("Payment done");
-          const res = await fetch("http://localhost:3000/charge", {
+        const res = await fetch(
+          `http://starter-express-api-git-main-salman36.vercel.app/api/auth/payment`,
+          {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              bookedid: productId,
+              amount: amount,
+              stripeEmail: values.email,
+              stripeToken: resToken,
+              name: values.name,
             }),
-          });
-          const data = await res.json();
-          console.log("Response from server", data);
-          navigation.navigate("MyBookings");
+          }
+        );
+
+        const data = await res.json();
+        console.log("Response from server", data);
+
+        if (data.message === "success") {
+          alert("Payment done");
+          updateDetails();
         }
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
+    }
+  };
+
+  const updateDetails = async () => {
+    console.log(productId, amount);
+    try {
+      const res = await fetch(
+        `http://starter-express-api-git-main-salman36.vercel.app/api/auth/playland/update/${productId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      console.log("Response from server", data);
+      dispatch({ type: "SET_BOOKING_REQUEST_FLAG", payload: true });
+      setLoading(false);
+      navigation.navigate("MyBookings");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -149,19 +175,24 @@ const BookingScreen = ({ navigation, route }) => {
                 console.log("focusField", focusedField);
               }}
             />
-
-            <TouchableOpacity
-              style={[
-                styles.button,
-                { backgroundColor: cardDetails ? COLORS.primary : COLORS.gray },
-              ]}
-              disabled={!cardDetails}
-              onPress={handleSubmit}
-            >
-              <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-                Confirm Payment
-              </Text>
-            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator size="large" color={COLORS.primary} />
+            ) : (
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: cardDetails ? COLORS.primary : COLORS.gray,
+                  },
+                ]}
+                disabled={!cardDetails}
+                onPress={handleSubmit}
+              >
+                <Text style={{ ...FONTS.h2, color: COLORS.white }}>
+                  Confirm Payment
+                </Text>
+              </TouchableOpacity>
+            )}
           </>
         )}
       </Formik>
