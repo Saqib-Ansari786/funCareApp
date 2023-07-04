@@ -7,12 +7,6 @@ module.exports = function (api) {
         plugins: [
           "react-native-paper/babel",
           [
-            "@stripe/stripe-react-native",
-            {
-              enableGooglePay: false,
-            },
-          ],
-          [
             "module:react-native-dotenv",
             {
               envName: "APP_ENV",

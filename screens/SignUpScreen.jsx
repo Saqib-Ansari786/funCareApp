@@ -35,7 +35,6 @@ const SignUpScreen = ({ navigation }) => {
   const [countryCode, setCountryCode] = useState("+92");
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
   const dispatch = useDispatch();
 
   const sendVerificationCode = (phoneNumber) => {
