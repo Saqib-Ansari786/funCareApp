@@ -35,7 +35,7 @@ const Home = () => {
       setLoading(true);
       const response = await fetch(url);
       const responseData = await response.json();
-      setDestinations(responseData);
+      setDestinations(responseData.sort((a, b) => a.updatedAt > b.updatedAt));
       dispatch({ type: "SET_PLAYLAND", payload: responseData });
       console.log(responseData);
     } catch (error) {
@@ -43,12 +43,6 @@ const Home = () => {
     }
     setLoading(false);
   }
-
-  const sortDestinations = () => {
-    const sorted = destinations.sort((a, b) => {
-      return a.updatedAt - b.updatedAt;
-    });
-  };
 
   function renderDestinations(item, index) {
     return (
@@ -68,14 +62,13 @@ const Home = () => {
             name: item.playland_name,
             description: item.discription,
             img: images.skiVilla,
-            latitude: item.latitude,
-            longitude: item.longitude,
             price: item.price,
             discount: item.discount,
             time_open: item.time_open,
             time_close: item.time_close,
             playlandId: item._id,
             location: item.location,
+            path_url: item.path_url,
           });
         }}
       >

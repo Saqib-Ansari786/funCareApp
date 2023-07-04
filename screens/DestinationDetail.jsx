@@ -32,8 +32,6 @@ const DestinationDetail = ({ route, navigation }) => {
 
   const {
     name,
-    latitude,
-    longitude,
     description,
     discount,
     price,
@@ -41,6 +39,7 @@ const DestinationDetail = ({ route, navigation }) => {
     time_close,
     playlandId,
     location,
+    path_url,
   } = route.params;
   const userId = useSelector((state) => state.user.userId);
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +95,7 @@ const DestinationDetail = ({ route, navigation }) => {
       {/* Header */}
       <View style={{ flex: 2 }}>
         <Image
-          source={images.joyland}
+          source={{ uri: path_url }}
           resizeMode="cover"
           style={{
             width: "100%",
@@ -120,7 +119,7 @@ const DestinationDetail = ({ route, navigation }) => {
           <View style={{ flexDirection: "row" }}>
             <View style={styles.shadow}>
               <Image
-                source={images.joyland}
+                source={{ uri: path_url }}
                 resizeMode="cover"
                 style={{
                   width: 60,
