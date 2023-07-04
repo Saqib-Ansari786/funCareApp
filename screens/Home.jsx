@@ -44,6 +44,12 @@ const Home = () => {
     setLoading(false);
   }
 
+  const sortDestinations = () => {
+    const sorted = destinations.sort((a, b) => {
+      return a.updatedAt - b.updatedAt;
+    });
+  };
+
   function renderDestinations(item, index) {
     return (
       <TouchableOpacity

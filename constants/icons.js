@@ -24,6 +24,7 @@ export const play = require("../assets/icons/playicon.png");
 export const main = require("../assets/icons/main.png");
 export const location = require("../assets/icons/location.png");
 export const faq = require("../assets/icons/faq_icon.png");
+export const tick = require("../assets/icons/tickIcon.gif");
 
 export default {
   airplane,
@@ -52,4 +53,5 @@ export default {
   main,
   location,
   faq,
+  tick,
 };

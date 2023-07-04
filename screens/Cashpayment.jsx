@@ -1,24 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { Formik } from "formik";
 import { object, string } from "yup";
 import { CardField, createToken, useStripe } from "@stripe/stripe-react-native";
 import { Button, TextInput } from "react-native-paper";
-import { COLORS, FONTS, SIZES } from "../constants";
+import { COLORS, FONTS, SIZES, icons } from "../constants";
 import Header from "../components/Header";
 import { useDispatch } from "react-redux";
+import Modal from "react-native-modal";
 
 const BookingScreen = ({ navigation, route }) => {
-  const [cardDetails, setCardDetails] = React.useState(null);
+  const [cardDetails, setCardDetails] = useState(null);
   const { amount, productId } = route.params;
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
 
   const fetchCardDetails = (cardDetail) => {
     if (cardDetail.complete) {
@@ -61,9 +64,13 @@ const BookingScreen = ({ navigation, route }) => {
         console.log("Response from server", data);
 
         if (data.message === "success") {
-          alert("Payment done");
-          updateDetails();
+          setShowModal(true); // Show the payment done modal
+          setTimeout(() => {
+            setShowModal(false); // Hide the modal after 3 seconds
+            updateDetails();
+          }, 3000);
         }
+        setLoading(false);
       } catch (error) {
         console.log(error);
         setLoading(false);
@@ -193,6 +200,14 @@ const BookingScreen = ({ navigation, route }) => {
                 </Text>
               </TouchableOpacity>
             )}
+
+            {/* Payment done modal */}
+            <Modal isVisible={showModal}>
+              <View style={styles.modalContainer}>
+                <Image source={icons.tick} style={styles.modalIcon} />
+                <Text style={styles.modalText}>Payment Done</Text>
+              </View>
+            </Modal>
           </>
         )}
       </Formik>
@@ -235,6 +250,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: SIZES.radius,
     marginTop: 20,
+  },
+  modalContainer: {
+    backgroundColor: COLORS.white,
+    padding: 20,
+    borderRadius: SIZES.radius,
+    alignItems: "center",
+    alignSelf: "center",
+    width: 350,
+    height: 300,
+  },
+  modalText: {
+    ...FONTS.h1,
+    color: COLORS.black,
+  },
+  modalIcon: {
+    width: 200,
+    height: 200,
+    resizeMode: "cover",
   },
 });
 
