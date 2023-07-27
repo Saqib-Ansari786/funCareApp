@@ -13,7 +13,7 @@ Introducing Fun Care App: Your Convenient Play Land Booking Solution!
 
 💥 Experience the joy of hassle-free play land bookings with Fun Care App. Discover, book, and manage play lands for your children with ease, guaranteeing unforgettable and fun-filled moments every time.
 
-Apk file: https://lnkd.in/d_9cqhRN
+Apk file: https://expo.dev/accounts/saqibansari/projects/funcareBusinessApp/builds/ec5e3370-794c-487d-8069-7ddf2a117953
 
 #FunCareApp #PlayLandBooking #Convenience #HassleFreeBookings #reactdeveloper #reactnativedevelopment #reactnativeapps #expo #paymentgateway #mernstack #firebase
 
