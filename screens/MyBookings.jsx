@@ -18,6 +18,35 @@ const BookingScreen = () => {
   const [loading, setLoading] = useState(true);
   const { bookingRequest } = useSelector((state) => state.request);
   const dispatch = useDispatch();
+  const [numSeats, setNumSeats] = useState(2);
+  const [updateMode, setUpdateMode] = useState(false); // Add this state
+
+  const handleIncreaseSeats = () => {
+    setNumSeats(numSeats + 1);
+    setUpdateMode(true); // Enable update mode
+  };
+
+  const handleDecreaseSeats = () => {
+    if (numSeats > 1) {
+      setNumSeats(numSeats - 1);
+      setUpdateMode(true); // Enable update mode
+    }
+  };
+
+  const handleUpdateSeats = async (productId, amount, numSeats) => {
+    // Implement logic to update the number of seats on the server
+    try {
+      // Send a request to update the seats
+      // Assuming a successful update
+      // Update the server and updateMode state
+      // You can also show a success message to the user
+      // After updating, set updateMode to false
+      setUpdateMode(false);
+    } catch (error) {
+      console.error(error);
+      // Handle errors if the update fails
+    }
+  };
 
   useEffect(() => {
     async function getBookingPlaylands() {
@@ -40,14 +69,15 @@ const BookingScreen = () => {
   }, [bookingRequest === true]);
 
   const handlePayment = (productId, amount) => {
-    // Implement payment logic here
-
-    console.log(productId, amount);
-
-    navigation.navigate("Cashpayment", {
-      productId,
-      amount,
-    });
+    if (updateMode) {
+      handleUpdateSeats(productId, amount, numSeats); // Call update function
+    } else {
+      console.log(productId, amount);
+      navigation.navigate("Cashpayment", {
+        productId,
+        amount,
+      });
+    }
   };
 
   const pendingBookings = bookingPlaylands.filter(
@@ -94,14 +124,37 @@ const BookingScreen = () => {
                   <Text
                     style={styles.bookingDescription}
                   >{`Amount: Rs.${booking.amount}`}</Text>
-                  <Text style={styles.bookingStatus}>
-                    {booking.bookingstatus}
+                  <Text style={styles.bookingDescription}>
+                    Status: {booking.bookingstatus}
                   </Text>
+                  <Text style={styles.bookingDescription}>
+                    Selected Package: {booking.bookingstatus}
+                  </Text>
+                  <View style={styles.seatControl}>
+                    <Text style={styles.bookingStatus}>Number of seats:</Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TouchableOpacity onPress={handleIncreaseSeats}>
+                        <Text style={styles.controlButton}>+</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.numSeats}>{numSeats}</Text>
+                      <TouchableOpacity onPress={handleDecreaseSeats}>
+                        <Text style={styles.controlButton}>-</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                   <TouchableOpacity
-                    style={styles.payButton}
+                    style={updateMode ? styles.updateButton : styles.payButton}
                     onPress={() => handlePayment(booking._id, booking.amount)}
                   >
-                    <Text style={styles.payButtonText}>Pay</Text>
+                    <Text style={styles.payButtonText}>
+                      {updateMode ? "Update" : "Pay"}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               ))}
@@ -129,6 +182,8 @@ const BookingScreen = () => {
     </View>
   );
 };
+
+// ... Styles and other parts of your component ...
 
 const styles = StyleSheet.create({
   container: {
@@ -181,6 +236,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
   },
+  updateButton: {
+    backgroundColor: "green",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
   payButtonText: {
     color: "#fff",
     textAlign: "center",
@@ -191,6 +252,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "right",
+  },
+  seatControl: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    justifyContent: "space-between",
+  },
+  controlButton: {
+    fontSize: 24,
+    fontWeight: "bold",
+    paddingHorizontal: 10,
+  },
+  numSeats: {
+    fontSize: 20,
+    paddingHorizontal: 10,
   },
 });
 

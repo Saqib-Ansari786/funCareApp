@@ -25,6 +25,8 @@ import Cashpayment from "./screens/Cashpayment";
 import UserProfileScreen from "./screens/UserProfile";
 import Onboarding3 from "./screens/OnBoardingScreens/Onboarding3";
 import { StripeProvider } from "@stripe/stripe-react-native";
+import PackageDetailScreen from "./screens/PackageDetail";
+import BookingScreen from "./screens/BookingConfirmation";
 
 const theme = {
   ...DefaultTheme,
@@ -35,7 +37,7 @@ const theme = {
 };
 
 function Main() {
-  const [route, setRoute] = useState("Onboarding3");
+  const [route, setRoute] = useState("Onboarding1");
   const dispatch = useDispatch();
   useEffect(() => {
     checkIfLoggedIn();
@@ -176,6 +178,22 @@ function Main() {
           <Stack.Screen
             name="UserProfileScreen"
             component={UserProfileScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="PackageDetail"
+            component={PackageDetailScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="BookingConfirmation"
+            component={BookingScreen}
             options={{
               title: null,
               headerShown: false,

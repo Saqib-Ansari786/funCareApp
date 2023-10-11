@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { images, icons, COLORS, FONTS, SIZES } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -99,14 +106,14 @@ const DestinationDetail = ({ route, navigation }) => {
           resizeMode="cover"
           style={{
             width: "100%",
-            height: "80%",
+            height: "70%",
           }}
         />
         <View
           style={[
             {
               position: "absolute",
-              bottom: "5%",
+              bottom: "10%",
               left: "5%",
               right: "5%",
               borderRadius: 15,
@@ -177,7 +184,7 @@ const DestinationDetail = ({ route, navigation }) => {
       </View>
 
       {/* Body */}
-      <View style={{ flex: 1.5 }}>
+      <ScrollView style={{ flex: 1.5, marginBottom: 30 }}>
         {/* Icons */}
         <View
           style={{
@@ -185,6 +192,7 @@ const DestinationDetail = ({ route, navigation }) => {
             marginTop: SIZES.base,
             paddingHorizontal: SIZES.padding * 2,
             justifyContent: "space-between",
+            marginBottom: SIZES.base,
           }}
         >
           <IconLabel
@@ -202,7 +210,7 @@ const DestinationDetail = ({ route, navigation }) => {
         <View
           style={{ marginTop: SIZES.padding, paddingHorizontal: SIZES.padding }}
         >
-          <Text style={{ ...FONTS.h2 }}>About</Text>
+          <Text style={{ ...FONTS.h2 }}>About:</Text>
           <Text
             style={{
               marginTop: SIZES.radius,
@@ -212,11 +220,54 @@ const DestinationDetail = ({ route, navigation }) => {
           >
             Timing: {time_open} - {time_close}
           </Text>
+          <Text style={{ ...FONTS.h2, marginTop: SIZES.radius }}>
+            Select Packages:
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PackageDetail")}
+            style={{
+              flexDirection: "row",
+              marginTop: SIZES.radius,
+              paddingVertical: SIZES.radius,
+              paddingHorizontal: SIZES.padding,
+              borderRadius: 5,
+              backgroundColor: COLORS.gray,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.black,
+                ...FONTS.body2,
+              }}
+            >
+              Luxury Vacation
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PackageDetail")}
+            style={{
+              flexDirection: "row",
+              marginTop: SIZES.radius,
+              paddingVertical: SIZES.radius,
+              paddingHorizontal: SIZES.padding,
+              borderRadius: 5,
+              backgroundColor: COLORS.gray,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.black,
+                ...FONTS.body2,
+              }}
+            >
+              bumper Vacation
+            </Text>
+          </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
 
       {/* Footer */}
-      <View style={{ flex: 0.5, paddingHorizontal: SIZES.padding }}>
+      {/* <View style={{ flex: 0.3, paddingHorizontal: SIZES.padding }}>
         <LinearGradient
           style={[{ height: 70, width: "100%", borderRadius: 15 }]}
           colors={["#edf0fc", "#d6dfff"]}
@@ -265,7 +316,7 @@ const DestinationDetail = ({ route, navigation }) => {
             )}
           </View>
         </LinearGradient>
-      </View>
+      </View> */}
     </View>
   );
 };
