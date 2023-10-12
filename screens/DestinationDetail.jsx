@@ -267,7 +267,7 @@ const DestinationDetail = ({ route, navigation }) => {
       </ScrollView>
 
       {/* Footer */}
-      {/* <View style={{ flex: 0.3, paddingHorizontal: SIZES.padding }}>
+      <View style={{ flex: 0.3, paddingHorizontal: SIZES.padding }}>
         <LinearGradient
           style={[{ height: 70, width: "100%", borderRadius: 15 }]}
           colors={["#edf0fc", "#d6dfff"]}
@@ -316,7 +316,7 @@ const DestinationDetail = ({ route, navigation }) => {
             )}
           </View>
         </LinearGradient>
-      </View> */}
+      </View>
     </View>
   );
 };

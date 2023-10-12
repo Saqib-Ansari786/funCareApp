@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import BookingBox from "../components/BookingBox";
 
 const BookingScreen = () => {
   const navigation = useNavigation();
@@ -116,47 +117,7 @@ const BookingScreen = () => {
           {selectedTab === "pending" ? (
             <ScrollView>
               {pendingBookings.map((booking) => (
-                <View key={booking._id} style={styles.bookingCard}>
-                  <Text style={styles.bookingTitle}>
-                    {booking.appplayland_id}
-                  </Text>
-                  <Text style={styles.bookingTitle}>{booking._id}</Text>
-                  <Text
-                    style={styles.bookingDescription}
-                  >{`Amount: Rs.${booking.amount}`}</Text>
-                  <Text style={styles.bookingDescription}>
-                    Status: {booking.bookingstatus}
-                  </Text>
-                  <Text style={styles.bookingDescription}>
-                    Selected Package: {booking.bookingstatus}
-                  </Text>
-                  <View style={styles.seatControl}>
-                    <Text style={styles.bookingStatus}>Number of seats:</Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TouchableOpacity onPress={handleIncreaseSeats}>
-                        <Text style={styles.controlButton}>+</Text>
-                      </TouchableOpacity>
-                      <Text style={styles.numSeats}>{numSeats}</Text>
-                      <TouchableOpacity onPress={handleDecreaseSeats}>
-                        <Text style={styles.controlButton}>-</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <TouchableOpacity
-                    style={updateMode ? styles.updateButton : styles.payButton}
-                    onPress={() => handlePayment(booking._id, booking.amount)}
-                  >
-                    <Text style={styles.payButtonText}>
-                      {updateMode ? "Update" : "Pay"}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                <BookingBox key={booking._id} booking={booking} />
               ))}
             </ScrollView>
           ) : (

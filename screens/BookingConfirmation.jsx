@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { COLORS, FONTS } from "../constants";
 import Header from "../components/Header";
+import DropDown from "react-native-paper-dropdown";
 
 const BookingScreen = ({ navigation }) => {
   const [selectedPackage, setSelectedPackage] = useState({
@@ -20,6 +21,13 @@ const BookingScreen = ({ navigation }) => {
   const [playlandName, setPlaylandName] = useState("Playland Name");
   const [playlandTimings, setPlaylandTimings] = useState("9:00 AM - 5:00 PM");
   const [seats, setSeats] = useState("");
+  const [selectedTiming, setSelectedTiming] = useState("Morning");
+  const timings = [
+    { label: "Morning", value: "Morning" },
+    { label: "Afternoon", value: "Afternoon" },
+    { label: "Evening", value: "Evening" },
+  ];
+  const [showDropDown, setShowDropDown] = useState(false);
 
   const handleBooking = () => {
     // Handle the booking logic here, e.g., send data to a server or perform any necessary action
@@ -47,7 +55,17 @@ const BookingScreen = ({ navigation }) => {
       <Text style={styles.packageDiscount}>
         Discount: {selectedPackage.discount}
       </Text>
-
+      <DropDown
+        label={"Select a Timing"}
+        mode={"outlined"}
+        value={selectedTiming}
+        setValue={setSelectedTiming}
+        list={timings}
+        visible={showDropDown}
+        showDropDown={() => setShowDropDown(true)}
+        onDismiss={() => setShowDropDown(false)}
+        dropDownItemStyle={{ backgroundColor: COLORS.white }}
+      />
       <Text style={styles.inputLabel}>Number of Seats to Reserve:</Text>
       <TextInput
         style={styles.input}
@@ -72,6 +90,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     padding: 20,
+    flexGrow: 1,
   },
   title: {
     ...FONTS.h1,
@@ -101,12 +120,12 @@ const styles = StyleSheet.create({
   },
   packageDiscount: {
     ...FONTS.body4,
-    marginBottom: 20,
+    marginBottom: 40,
   },
   inputLabel: {
     ...FONTS.body2,
     marginBottom: 5,
-    marginTop: 50,
+    marginTop: 30,
   },
   input: {
     ...FONTS.body2,
@@ -121,6 +140,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     fontSize: 18,
+    marginTop: 20,
   },
 });
 
