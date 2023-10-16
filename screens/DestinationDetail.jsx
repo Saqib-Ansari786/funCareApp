@@ -38,16 +38,16 @@ const DestinationDetail = ({ route, navigation }) => {
   // Render
 
   const {
-    name,
-    description,
-    discount,
-    price,
-    time_open,
-    time_close,
+    playland_name,
+    discription,
     playlandId,
     location,
-    path_url,
-  } = route.params;
+    image,
+    timing1,
+    timing2,
+    timing3,
+    packages,
+  } = route.params.item;
   const userId = useSelector((state) => state.user.userId);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -100,9 +100,9 @@ const DestinationDetail = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={{ flex: 2 }}>
+      <View style={{ flex: 0.7 }}>
         <Image
-          source={{ uri: path_url }}
+          source={{ uri: image }}
           resizeMode="cover"
           style={{
             width: "100%",
@@ -113,7 +113,7 @@ const DestinationDetail = ({ route, navigation }) => {
           style={[
             {
               position: "absolute",
-              bottom: "10%",
+              top: "50%",
               left: "5%",
               right: "5%",
               borderRadius: 15,
@@ -126,7 +126,7 @@ const DestinationDetail = ({ route, navigation }) => {
           <View style={{ flexDirection: "row" }}>
             <View style={styles.shadow}>
               <Image
-                source={{ uri: path_url }}
+                source={{ uri: image }}
                 resizeMode="cover"
                 style={{
                   width: 60,
@@ -142,13 +142,13 @@ const DestinationDetail = ({ route, navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <Text style={{ ...FONTS.h2 }}>{name}</Text>
+              <Text style={{ ...FONTS.h2 }}>{playland_name}</Text>
             </View>
           </View>
 
           <View style={{ marginTop: SIZES.radius }}>
             <Text style={{ color: COLORS.gray, ...FONTS.body3 }}>
-              {description}
+              {discription}
             </Text>
           </View>
         </View>
@@ -184,15 +184,13 @@ const DestinationDetail = ({ route, navigation }) => {
       </View>
 
       {/* Body */}
-      <ScrollView style={{ flex: 1.5, marginBottom: 30 }}>
+      <ScrollView style={{ flex: 1 }}>
         {/* Icons */}
         <View
           style={{
             flexDirection: "row",
-            marginTop: SIZES.base,
             paddingHorizontal: SIZES.padding * 2,
-            justifyContent: "space-between",
-            marginBottom: SIZES.base,
+            justifyContent: "center",
           }}
         >
           <IconLabel
@@ -200,73 +198,55 @@ const DestinationDetail = ({ route, navigation }) => {
             label={"Location"}
             onPress={() => handleOpenLink(location)}
           />
-
-          <IconLabel icon={icons.parking} label={`Rs. ${price}`} />
-
-          <IconLabel icon={icons.wind} label={`Disc ${discount}%`} />
         </View>
 
         {/* About */}
         <View
           style={{ marginTop: SIZES.padding, paddingHorizontal: SIZES.padding }}
         >
-          <Text style={{ ...FONTS.h2 }}>About:</Text>
-          <Text
-            style={{
-              marginTop: SIZES.radius,
-              color: COLORS.gray,
-              ...FONTS.body3,
-            }}
-          >
-            Timing: {time_open} - {time_close}
-          </Text>
           <Text style={{ ...FONTS.h2, marginTop: SIZES.radius }}>
             Select Packages:
           </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("PackageDetail")}
-            style={{
-              flexDirection: "row",
-              marginTop: SIZES.radius,
-              paddingVertical: SIZES.radius,
-              paddingHorizontal: SIZES.padding,
-              borderRadius: 5,
-              backgroundColor: COLORS.gray,
-            }}
-          >
-            <Text
-              style={{
-                color: COLORS.black,
-                ...FONTS.body2,
-              }}
-            >
-              Luxury Vacation
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("PackageDetail")}
-            style={{
-              flexDirection: "row",
-              marginTop: SIZES.radius,
-              paddingVertical: SIZES.radius,
-              paddingHorizontal: SIZES.padding,
-              borderRadius: 5,
-              backgroundColor: COLORS.gray,
-            }}
-          >
-            <Text
-              style={{
-                color: COLORS.black,
-                ...FONTS.body2,
-              }}
-            >
-              bumper Vacation
-            </Text>
-          </TouchableOpacity>
+
+          {packages.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => navigation.navigate("PackageDetail", { item })}
+                style={{
+                  flexDirection: "row",
+                  marginTop: SIZES.radius,
+                  paddingVertical: SIZES.radius,
+                  paddingHorizontal: SIZES.padding,
+                  borderRadius: 5,
+                  backgroundColor: COLORS.gray,
+                  justifyContent: "space-between",
+                  ...styles.shadow,
+                }}
+              >
+                <Text
+                  style={{
+                    color: COLORS.black,
+                    ...FONTS.body2,
+                  }}
+                >
+                  {item.package_name}
+                </Text>
+                <Text
+                  style={{
+                    color: COLORS.black,
+                    ...FONTS.body2,
+                  }}
+                >
+                  {item.price}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </ScrollView>
 
-      {/* Footer */}
+      {/* Footer
       <View style={{ flex: 0.3, paddingHorizontal: SIZES.padding }}>
         <LinearGradient
           style={[{ height: 70, width: "100%", borderRadius: 15 }]}
@@ -316,7 +296,7 @@ const DestinationDetail = ({ route, navigation }) => {
             )}
           </View>
         </LinearGradient>
-      </View>
+      </View> */}
     </View>
   );
 };

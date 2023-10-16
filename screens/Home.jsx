@@ -59,21 +59,12 @@ const Home = () => {
         ]}
         onPress={() => {
           navigation.navigate("DestinationDetail", {
-            name: item.playland_name,
-            description: item.discription,
-            img: images.skiVilla,
-            price: item.price,
-            discount: item.discount,
-            time_open: item.time_open,
-            time_close: item.time_close,
-            playlandId: item._id,
-            location: item.location,
-            path_url: item.path_url,
+            item,
           });
         }}
       >
         <Image
-          source={{ uri: item.path_url }}
+          source={{ uri: item.image }}
           resizeMode="cover"
           style={{
             width: SIZES.width * 0.2,

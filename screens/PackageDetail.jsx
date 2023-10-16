@@ -10,7 +10,7 @@ import {
 import { COLORS, FONTS } from "../constants";
 import Header from "../components/Header";
 
-const PackageDetailScreen = ({ navigation }) => {
+const PackageDetailScreen = ({ navigation, route }) => {
   const packageData = {
     title: "Luxury Vacation Package",
     description:
@@ -18,6 +18,8 @@ const PackageDetailScreen = ({ navigation }) => {
     price: "Rs.999", // Add the package price
     discount: "Rs.200 off", // Add the discount information
   };
+
+  const { package_name, price, discount, discription } = route.params.item;
 
   return (
     <ImageBackground
@@ -29,15 +31,13 @@ const PackageDetailScreen = ({ navigation }) => {
       <View style={styles.container}>
         <Header />
 
-        <Text style={styles.title}>{packageData.title}</Text>
-        <Text style={styles.description}>{packageData.description}</Text>
+        <Text style={styles.title}>{package_name}</Text>
+        <Text style={styles.description}>{discription}</Text>
 
         {/* Display the price */}
-        <Text style={styles.priceText}>Price: {packageData.price}</Text>
+        <Text style={styles.priceText}>Price: {price}</Text>
         {/* Display the discount */}
-        <Text style={styles.discountText}>
-          Discount: {packageData.discount}
-        </Text>
+        <Text style={styles.discountText}>Discount: {discount}</Text>
 
         <TouchableOpacity
           onPress={() => navigation.navigate("BookingConfirmation")}
