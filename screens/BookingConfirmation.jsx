@@ -11,21 +11,27 @@ import {
 import { COLORS, FONTS } from "../constants";
 import Header from "../components/Header";
 import DropDown from "react-native-paper-dropdown";
+import { useSelector } from "react-redux";
 
-const BookingScreen = ({ navigation }) => {
-  const [selectedPackage, setSelectedPackage] = useState({
-    name: "Luxury Vacation Package",
-    price: "Rs.999",
-    discount: "Rs.200 off",
-  });
-  const [playlandName, setPlaylandName] = useState("Playland Name");
-  const [playlandTimings, setPlaylandTimings] = useState("9:00 AM - 5:00 PM");
+const BookingScreen = ({ navigation, route }) => {
+  const { package_name, price, discount, discription, playlandId } =
+    route.params.item;
+  const playLand = useSelector((state) => state.playland);
+
+  console.log(playlandId);
+
+  const selected_playland = playLand.playland.find(
+    (item) => item._id === playlandId
+  );
+  const { timing1, timing2, timing3, playland_name } = selected_playland;
+  console.log(playland_name);
+
   const [seats, setSeats] = useState("");
-  const [selectedTiming, setSelectedTiming] = useState("Morning");
+  const [selectedTiming, setSelectedTiming] = useState(timing1.timing);
   const timings = [
-    { label: "Morning", value: "Morning" },
-    { label: "Afternoon", value: "Afternoon" },
-    { label: "Evening", value: "Evening" },
+    { label: timing1.timing, value: timing1.timing },
+    { label: timing2.timing, value: timing2.timing },
+    { label: timing3.timing, value: timing3.timing },
   ];
   const [showDropDown, setShowDropDown] = useState(false);
 
@@ -46,15 +52,12 @@ const BookingScreen = ({ navigation }) => {
 
       <Text style={styles.title}>Booking Details</Text>
 
-      <Text style={styles.playlandName}>Playland: {playlandName}</Text>
-      <Text style={styles.timings}>Timings: {playlandTimings}</Text>
+      <Text style={styles.playlandName}>Playland: {playland_name}</Text>
 
       <Text style={styles.packageDetails}>Selected Package:</Text>
-      <Text style={styles.packageName}>{selectedPackage.name}</Text>
-      <Text style={styles.packagePrice}>Price: {selectedPackage.price}</Text>
-      <Text style={styles.packageDiscount}>
-        Discount: {selectedPackage.discount}
-      </Text>
+      <Text style={styles.packageName}>{package_name}</Text>
+      <Text style={styles.packagePrice}>Price: {price}</Text>
+      <Text style={styles.packageDiscount}>Discount: {discount}</Text>
       <DropDown
         label={"Select a Timing"}
         mode={"outlined"}

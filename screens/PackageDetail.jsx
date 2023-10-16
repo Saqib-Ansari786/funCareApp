@@ -11,15 +11,8 @@ import { COLORS, FONTS } from "../constants";
 import Header from "../components/Header";
 
 const PackageDetailScreen = ({ navigation, route }) => {
-  const packageData = {
-    title: "Luxury Vacation Package",
-    description:
-      "Discover the beauty of a paradise island with our exclusive luxury vacation package. Enjoy breathtaking views, exquisite cuisine, and top-notch accommodations.",
-    price: "Rs.999", // Add the package price
-    discount: "Rs.200 off", // Add the discount information
-  };
-
-  const { package_name, price, discount, discription } = route.params.item;
+  const { package_name, price, discount, discription, playlandId } =
+    route.params.item;
 
   return (
     <ImageBackground
@@ -40,7 +33,11 @@ const PackageDetailScreen = ({ navigation, route }) => {
         <Text style={styles.discountText}>Discount: {discount}</Text>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("BookingConfirmation")}
+          onPress={() =>
+            navigation.navigate("BookingConfirmation", {
+              item: route.params.item,
+            })
+          }
           style={styles.button}
         >
           <Text style={{ color: "white", ...FONTS.body2, textAlign: "center" }}>

@@ -40,13 +40,13 @@ const DestinationDetail = ({ route, navigation }) => {
   const {
     playland_name,
     discription,
-    playlandId,
     location,
     image,
     timing1,
     timing2,
     timing3,
     packages,
+    _id,
   } = route.params.item;
   const userId = useSelector((state) => state.user.userId);
   const [isLoading, setIsLoading] = useState(false);
@@ -212,7 +212,14 @@ const DestinationDetail = ({ route, navigation }) => {
             return (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate("PackageDetail", { item })}
+                onPress={() =>
+                  navigation.navigate("PackageDetail", {
+                    item: {
+                      ...item,
+                      playlandId: _id,
+                    },
+                  })
+                }
                 style={{
                   flexDirection: "row",
                   marginTop: SIZES.radius,
