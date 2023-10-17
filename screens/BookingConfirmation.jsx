@@ -15,16 +15,18 @@ import { useSelector } from "react-redux";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const BookingScreen = ({ navigation, route }) => {
-  const { package_name, price, discount, discription, playlandId } =
+  const { package_name, price, discount, discription, playlandId, _id } =
     route.params.item;
+
   const playLand = useSelector((state) => state.playland);
+  const { userId } = useSelector((state) => state.user);
 
   const selected_playland = playLand.playland.find(
     (item) => item._id === playlandId
   );
   const { timing1, timing2, timing3, playland_name } = selected_playland;
 
-  const [seats, setSeats] = useState("");
+  const [seats, setSeats] = useState("1");
   const [selectedTiming, setSelectedTiming] = useState(timing1.timing);
   const timings = [
     { label: timing1.timing, value: timing1.timing },
@@ -34,6 +36,9 @@ const BookingScreen = ({ navigation, route }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [amount, setAmount] = useState(
+    price - price * (discount / 100) * seats
+  );
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -41,7 +46,7 @@ const BookingScreen = ({ navigation, route }) => {
     setDate(currentDate);
   };
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     // Handle the booking logic here, e.g., send data to a server or perform any necessary action
     // You can customize this function to match your booking process
     // For this example, we'll just navigate back to the PackageDetail screen.
@@ -49,7 +54,43 @@ const BookingScreen = ({ navigation, route }) => {
       alert("Please enter the number of seats to reserve");
       return;
     }
-    navigation.navigate("MyBookings");
+    const bookingData = {
+      appuser_id: userId,
+      appplayland_id: playlandId,
+      amount,
+      seats,
+      date_selected: date.toLocaleDateString(),
+      timing_selected: selectedTiming,
+      packages_selected: _id,
+      method: "card",
+      paymentstatus: "pending",
+      bookingstatus: "pending",
+    };
+
+    console.log(bookingData);
+
+    try {
+      const response = await fetch(
+        "https://funcare-backend.vercel.app/api/auth/businessbookinguser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingData),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        alert("Booking Successful");
+        navigation.navigate("MyBookings");
+      } else {
+        alert("Booking Failed");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -76,12 +117,8 @@ const BookingScreen = ({ navigation, route }) => {
         dropDownItemStyle={{ backgroundColor: COLORS.white }}
       />
       <Text style={styles.inputLabel}>Select a Date:</Text>
-      <TouchableOpacity
-        onPress={() => setShow(true)}
-        style={styles.input}
-        placeholder="Select a Date"
-      >
-        <Text>{date.toLocaleDateString()}</Text>
+      <TouchableOpacity onPress={() => setShow(true)} style={styles.input}>
+        <Text style={{ ...FONTS.body2 }}>{date.toLocaleDateString()}</Text>
       </TouchableOpacity>
       {show && (
         <DateTimePicker
@@ -97,9 +134,18 @@ const BookingScreen = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={seats}
-        onChangeText={(text) => setSeats(text)}
+        onChangeText={(text) => {
+          setSeats(text);
+          setAmount((price - price * (discount / 100)) * text);
+        }}
         placeholder="Enter the number of seats"
         keyboardType="numeric"
+      />
+      <Text style={styles.inputLabel}>Total Amount:</Text>
+      <TextInput
+        style={styles.input}
+        value={amount.toString()}
+        editable={false}
       />
 
       <TouchableOpacity onPress={handleBooking} style={styles.button}>
@@ -115,7 +161,7 @@ const BookingScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.white,
+    backgroundColor: "lightblue",
     padding: 20,
     flexGrow: 1,
   },
