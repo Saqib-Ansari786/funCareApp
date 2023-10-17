@@ -7,10 +7,12 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
-export default function BookingBox({ booking }) {
+export default function BookingBox({ booking, navigation }) {
   const [numSeats, setNumSeats] = useState(booking.seats || "1");
   const [updateMode, setUpdateMode] = useState(false); // Add this state
-  const [amount, setAmount] = useState(booking.amount); // Add this state
+  const [amount, setAmount] = useState(
+    (booking.price - (booking.price * booking.discount) / 100) * numSeats
+  ); // Add this state
 
   const handleIncreaseSeats = () => {
     setNumSeats(numSeats + 1);
@@ -24,7 +26,7 @@ export default function BookingBox({ booking }) {
     }
   };
 
-  const handleUpdateSeats = async (productId, amount, numSeats) => {
+  const handleUpdateSeats = async (booking_id, numSeats) => {
     try {
       setUpdateMode(false); // Disable update mode
       alert("Seats updated successfully");
@@ -46,22 +48,21 @@ export default function BookingBox({ booking }) {
   };
 
   useEffect(() => {
-    setAmount(booking.amount * numSeats); // Update amount
+    setAmount(
+      (booking.price - (booking.price * booking.discount) / 100) * numSeats
+    ); // Update amount
   }, [numSeats]);
 
   return (
     <View key={booking._id} style={styles.bookingCard}>
-      <Text style={styles.bookingTitle}>{booking.appplayland_id}</Text>
-      <Text style={styles.bookingTitle}>{booking._id}</Text>
+      <Text style={styles.bookingTitle}>{booking.playland_name}</Text>
       <Text style={styles.bookingDescription}>
         Date: {booking.date_selected}
       </Text>
       <Text style={styles.bookingDescription}>
         Timing: {booking.timing_selected}
       </Text>
-      <Text
-        style={styles.bookingDescription}
-      >{`Amount: Rs.${booking.amount} x ${numSeats} = ${amount}`}</Text>
+      <Text style={styles.bookingDescription}>Total Amount: {amount}</Text>
       <Text style={styles.bookingDescription}>
         Status: {booking.paymentstatus}
       </Text>
@@ -93,7 +94,7 @@ export default function BookingBox({ booking }) {
       </View>
       <TouchableOpacity
         style={updateMode ? styles.updateButton : styles.payButton}
-        onPress={() => handlePayment(booking._id, booking.amount)}
+        onPress={() => handlePayment(booking._id, amount)}
       >
         <Text style={styles.payButtonText}>
           {updateMode ? "Update" : "Pay"}

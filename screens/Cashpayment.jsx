@@ -42,7 +42,7 @@ const BookingScreen = ({ navigation, route }) => {
       try {
         setLoading(true);
         const resToken = await createToken({ ...cardDetails, type: "Card" });
-        console.log(resToken.token);
+        console.log("this is token", resToken.token);
 
         const res = await fetch(
           `http://starter-express-api-git-main-salman36.vercel.app/api/auth/payment`,

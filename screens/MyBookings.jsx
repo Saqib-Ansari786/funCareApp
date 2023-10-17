@@ -25,7 +25,7 @@ const BookingScreen = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://starter-express-api-git-main-salman36.vercel.app/api/auth/userbooking/${userId}`
+          `https://funcare-backend.vercel.app/api/auth/userbooking/${userId}`
         );
         const responseData = await response.json();
         setBookingPlaylands(responseData.userbooking);
@@ -76,7 +76,11 @@ const BookingScreen = () => {
           {selectedTab === "pending" ? (
             <ScrollView>
               {pendingBookings.map((booking) => (
-                <BookingBox key={booking._id} booking={booking} />
+                <BookingBox
+                  key={booking._id}
+                  booking={booking}
+                  navigation={navigation}
+                />
               ))}
             </ScrollView>
           ) : (
@@ -84,11 +88,12 @@ const BookingScreen = () => {
               {confirmedBookings.map((booking) => (
                 <View key={booking._id} style={styles.bookingCard}>
                   <Text style={styles.bookingTitle}>
-                    {booking.appplayland_id}
+                    {booking.playland_name}
                   </Text>
-                  <Text
-                    style={styles.bookingDescription}
-                  >{`Amount: Rs.${booking.amount}`}</Text>
+                  <Text style={styles.bookingDescription}>{`Amount: Rs.${
+                    (booking.price - (booking.price * booking.discount) / 100) *
+                    booking.seats
+                  }`}</Text>
                   <Text style={styles.bookingStatus}>
                     {booking.bookingstatus}
                   </Text>

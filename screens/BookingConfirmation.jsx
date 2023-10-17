@@ -7,11 +7,12 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { COLORS, FONTS } from "../constants";
 import Header from "../components/Header";
 import DropDown from "react-native-paper-dropdown";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const BookingScreen = ({ navigation, route }) => {
@@ -20,6 +21,7 @@ const BookingScreen = ({ navigation, route }) => {
 
   const playLand = useSelector((state) => state.playland);
   const { userId } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const selected_playland = playLand.playland.find(
     (item) => item._id === playlandId
@@ -39,6 +41,7 @@ const BookingScreen = ({ navigation, route }) => {
   const [amount, setAmount] = useState(
     price - price * (discount / 100) * seats
   );
+  const [loading, setLoading] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -57,11 +60,13 @@ const BookingScreen = ({ navigation, route }) => {
     const bookingData = {
       appuser_id: userId,
       appplayland_id: playlandId,
-      amount,
+      playland_name,
+      price,
+      discount,
       seats,
       date_selected: date.toLocaleDateString(),
       timing_selected: selectedTiming,
-      packages_selected: _id,
+      packages_selected: package_name,
       method: "card",
       paymentstatus: "pending",
       bookingstatus: "pending",
@@ -70,6 +75,7 @@ const BookingScreen = ({ navigation, route }) => {
     console.log(bookingData);
 
     try {
+      setLoading(true);
       const response = await fetch(
         "https://funcare-backend.vercel.app/api/auth/businessbookinguser",
         {
@@ -84,6 +90,8 @@ const BookingScreen = ({ navigation, route }) => {
       console.log(data);
       if (data.success) {
         alert("Booking Successful");
+        dispatch({ type: "SET_BOOKING_REQUEST_FLAG", payload: true });
+        setLoading(false);
         navigation.navigate("MyBookings");
       } else {
         alert("Booking Failed");
@@ -149,11 +157,15 @@ const BookingScreen = ({ navigation, route }) => {
       />
 
       <TouchableOpacity onPress={handleBooking} style={styles.button}>
-        <Text
-          style={{ ...FONTS.body2, color: COLORS.white, textAlign: "center" }}
-        >
-          Book Now
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text
+            style={{ ...FONTS.body2, color: COLORS.white, textAlign: "center" }}
+          >
+            Book Now
+          </Text>
+        )}
       </TouchableOpacity>
     </ScrollView>
   );
