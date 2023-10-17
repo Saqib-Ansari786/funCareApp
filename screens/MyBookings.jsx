@@ -19,35 +19,6 @@ const BookingScreen = () => {
   const [loading, setLoading] = useState(true);
   const { bookingRequest } = useSelector((state) => state.request);
   const dispatch = useDispatch();
-  const [numSeats, setNumSeats] = useState(2);
-  const [updateMode, setUpdateMode] = useState(false); // Add this state
-
-  const handleIncreaseSeats = () => {
-    setNumSeats(numSeats + 1);
-    setUpdateMode(true); // Enable update mode
-  };
-
-  const handleDecreaseSeats = () => {
-    if (numSeats > 1) {
-      setNumSeats(numSeats - 1);
-      setUpdateMode(true); // Enable update mode
-    }
-  };
-
-  const handleUpdateSeats = async (productId, amount, numSeats) => {
-    // Implement logic to update the number of seats on the server
-    try {
-      // Send a request to update the seats
-      // Assuming a successful update
-      // Update the server and updateMode state
-      // You can also show a success message to the user
-      // After updating, set updateMode to false
-      setUpdateMode(false);
-    } catch (error) {
-      console.error(error);
-      // Handle errors if the update fails
-    }
-  };
 
   useEffect(() => {
     async function getBookingPlaylands() {
@@ -68,18 +39,6 @@ const BookingScreen = () => {
 
     dispatch({ type: "SET_BOOKING_REQUEST_FLAG", payload: false });
   }, [bookingRequest === true]);
-
-  const handlePayment = (productId, amount) => {
-    if (updateMode) {
-      handleUpdateSeats(productId, amount, numSeats); // Call update function
-    } else {
-      console.log(productId, amount);
-      navigation.navigate("Cashpayment", {
-        productId,
-        amount,
-      });
-    }
-  };
 
   const pendingBookings = bookingPlaylands.filter(
     (booking) => booking.bookingstatus === "pending"

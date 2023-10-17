@@ -1,8 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 
 export default function BookingBox({ booking }) {
-  const [numSeats, setNumSeats] = useState(1);
+  const [numSeats, setNumSeats] = useState(booking.seats || "1");
   const [updateMode, setUpdateMode] = useState(false); // Add this state
   const [amount, setAmount] = useState(booking.amount); // Add this state
 
@@ -47,14 +53,20 @@ export default function BookingBox({ booking }) {
     <View key={booking._id} style={styles.bookingCard}>
       <Text style={styles.bookingTitle}>{booking.appplayland_id}</Text>
       <Text style={styles.bookingTitle}>{booking._id}</Text>
+      <Text style={styles.bookingDescription}>
+        Date: {booking.date_selected}
+      </Text>
+      <Text style={styles.bookingDescription}>
+        Timing: {booking.timing_selected}
+      </Text>
       <Text
         style={styles.bookingDescription}
       >{`Amount: Rs.${booking.amount} x ${numSeats} = ${amount}`}</Text>
       <Text style={styles.bookingDescription}>
-        Status: {booking.bookingstatus}
+        Status: {booking.paymentstatus}
       </Text>
       <Text style={styles.bookingDescription}>
-        Selected Package: {booking.bookingstatus}
+        Selected Package: {booking.packages_selected}
       </Text>
       <View style={styles.seatControl}>
         <Text style={styles.bookingStatus}>Number of seats:</Text>
@@ -68,7 +80,12 @@ export default function BookingBox({ booking }) {
           <TouchableOpacity onPress={handleIncreaseSeats}>
             <Text style={styles.controlButton}>+</Text>
           </TouchableOpacity>
-          <Text style={styles.numSeats}>{numSeats}</Text>
+          <TextInput
+            style={styles.numSeats}
+            onChangeText={setNumSeats}
+            value={numSeats.toString()}
+          />
+
           <TouchableOpacity onPress={handleDecreaseSeats}>
             <Text style={styles.controlButton}>-</Text>
           </TouchableOpacity>
