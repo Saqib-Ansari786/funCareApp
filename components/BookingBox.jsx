@@ -27,9 +27,28 @@ export default function BookingBox({ booking, navigation }) {
   };
 
   const handleUpdateSeats = async (booking_id, numSeats) => {
+    console.log("booking id", booking_id);
+
     try {
-      setUpdateMode(false); // Disable update mode
-      alert("Seats updated successfully");
+      const response = await fetch(
+        `https://funcare-backend.vercel.app/api/auth/update/seats/${booking_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            seats: numSeats,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (data.message === "success") {
+        setUpdateMode(false); // Disable update mode
+        alert("Seats updated successfully");
+      } else {
+        alert("Seats not updated");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +56,7 @@ export default function BookingBox({ booking, navigation }) {
 
   const handlePayment = (productId, amount) => {
     if (updateMode) {
-      handleUpdateSeats(productId, amount, numSeats); // Call update function
+      handleUpdateSeats(productId, numSeats); // Call update function
     } else {
       console.log(productId, amount);
       navigation.navigate("Cashpayment", {
@@ -83,7 +102,10 @@ export default function BookingBox({ booking, navigation }) {
           </TouchableOpacity>
           <TextInput
             style={styles.numSeats}
-            onChangeText={setNumSeats}
+            onChangeText={(text) => {
+              setNumSeats(text);
+              setUpdateMode(true);
+            }}
             value={numSeats.toString()}
           />
 
