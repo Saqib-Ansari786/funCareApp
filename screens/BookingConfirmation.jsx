@@ -12,12 +12,12 @@ import { COLORS, FONTS } from "../constants";
 import Header from "../components/Header";
 import DropDown from "react-native-paper-dropdown";
 import { useSelector } from "react-redux";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const BookingScreen = ({ navigation, route }) => {
   const { package_name, price, discount, discription, playlandId } =
     route.params.item;
   const playLand = useSelector((state) => state.playland);
-
 
   const selected_playland = playLand.playland.find(
     (item) => item._id === playlandId
@@ -32,6 +32,14 @@ const BookingScreen = ({ navigation, route }) => {
     { label: timing3.timing, value: timing3.timing },
   ];
   const [showDropDown, setShowDropDown] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
 
   const handleBooking = () => {
     // Handle the booking logic here, e.g., send data to a server or perform any necessary action
@@ -67,6 +75,24 @@ const BookingScreen = ({ navigation, route }) => {
         onDismiss={() => setShowDropDown(false)}
         dropDownItemStyle={{ backgroundColor: COLORS.white }}
       />
+      <Text style={styles.inputLabel}>Select a Date:</Text>
+      <TouchableOpacity
+        onPress={() => setShow(true)}
+        style={styles.input}
+        placeholder="Select a Date"
+      >
+        <Text>{date.toLocaleDateString()}</Text>
+      </TouchableOpacity>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={"date"}
+          is24Hour={true}
+          display="calendar"
+          onChange={onChange}
+        />
+      )}
       <Text style={styles.inputLabel}>Number of Seats to Reserve:</Text>
       <TextInput
         style={styles.input}
