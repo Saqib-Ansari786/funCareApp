@@ -18,13 +18,11 @@ const BookingScreen = ({ navigation, route }) => {
     route.params.item;
   const playLand = useSelector((state) => state.playland);
 
-  console.log(playlandId);
 
   const selected_playland = playLand.playland.find(
     (item) => item._id === playlandId
   );
   const { timing1, timing2, timing3, playland_name } = selected_playland;
-  console.log(playland_name);
 
   const [seats, setSeats] = useState("");
   const [selectedTiming, setSelectedTiming] = useState(timing1.timing);

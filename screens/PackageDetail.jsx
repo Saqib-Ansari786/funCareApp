@@ -11,7 +11,7 @@ import { COLORS, FONTS } from "../constants";
 import Header from "../components/Header";
 
 const PackageDetailScreen = ({ navigation, route }) => {
-  const { package_name, price, discount, discription, playlandId } =
+  const { package_name, price, discount, discription } =
     route.params.item;
 
   return (
