@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Image,
+  ImageBackground,
 } from "react-native";
 import { Formik } from "formik";
 import { object, string } from "yup";
 import { CardField, createToken, useStripe } from "@stripe/stripe-react-native";
 import { Button, TextInput } from "react-native-paper";
-import { COLORS, FONTS, SIZES, icons } from "../constants";
+import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 import Header from "../components/Header";
 import { useDispatch } from "react-redux";
 import Modal from "react-native-modal";
@@ -107,7 +108,7 @@ const BookingScreen = ({ navigation, route }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <ImageBackground style={styles.container} source={images.cash_background}>
       <Header />
       <Text style={{ ...FONTS.h1, marginTop: 100 }}>Pay with Card</Text>
 
@@ -157,12 +158,12 @@ const BookingScreen = ({ navigation, route }) => {
               <Text style={styles.errorMessage}>{errors.email}</Text>
             )}
 
-            <Text style={{ ...FONTS.body3, marginTop: 10 }}>
+            <Text style={{ ...FONTS.h3, marginTop: 10 }}>
               Safe money transfer using your bank account. Visa, Maestro,
               Discover, American Express.
             </Text>
             <Text style={{ ...FONTS.body3, marginTop: 10 }}>
-              Enter your card details to make payment
+              Enter your card details:
             </Text>
 
             <CardField
@@ -211,14 +212,13 @@ const BookingScreen = ({ navigation, route }) => {
           </>
         )}
       </Formik>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
     paddingHorizontal: SIZES.padding,
   },
   input: {

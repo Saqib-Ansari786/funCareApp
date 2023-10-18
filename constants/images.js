@@ -9,6 +9,7 @@ export const onboardingImage1 = require("../assets/images/onboarding_image1.webp
 export const joyland = require("../assets/images/joyland.jpg");
 export const phone = require("../assets/images/phone.jpg");
 export const verification = require("../assets/images/verification.png");
+export const cash_background = require("../assets/images/cash_background.jpg");
 
 export default {
   beach,
@@ -22,4 +23,5 @@ export default {
   joyland,
   phone,
   verification,
+  cash_background,
 };

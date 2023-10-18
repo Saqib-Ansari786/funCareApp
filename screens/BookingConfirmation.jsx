@@ -14,6 +14,7 @@ import Header from "../components/Header";
 import DropDown from "react-native-paper-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { set } from "firebase/database";
 
 const BookingScreen = ({ navigation, route }) => {
   const { package_name, price, discount, discription, playlandId, _id } =
@@ -43,10 +44,24 @@ const BookingScreen = ({ navigation, route }) => {
   );
   const [loading, setLoading] = useState(false);
 
+  const isDateValid = (selectedDate) => {
+    const currentDate = new Date();
+    const twoDaysFromNow = new Date(currentDate);
+    twoDaysFromNow.setDate(currentDate.getDate() + 2);
+    return selectedDate >= twoDaysFromNow;
+  };
+
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
+    if (selectedDate) {
+      if (isDateValid(selectedDate)) {
+        setShow(false);
+        setDate(selectedDate);
+      } else {
+        // Show an error message to the user, the selected date is not valid.
+        setShow(false);
+        alert("Please select a date that is at least two days from today.");
+      }
+    }
   };
 
   const handleBooking = async () => {

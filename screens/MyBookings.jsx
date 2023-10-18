@@ -90,12 +90,18 @@ const BookingScreen = () => {
                   <Text style={styles.bookingTitle}>
                     {booking.playland_name}
                   </Text>
-                  <Text style={styles.bookingDescription}>{`Amount: Rs.${
+                  <Text style={styles.bookingDescription}>{`Total Amount: Rs.${
                     (booking.price - (booking.price * booking.discount) / 100) *
                     booking.seats
                   }`}</Text>
-                  <Text style={styles.bookingStatus}>
-                    {booking.bookingstatus}
+                  <Text style={styles.bookingDescription}>
+                    Seats booked: {booking.seats}
+                  </Text>
+                  <Text style={styles.bookingDescription}>
+                    Your timings: {booking.timing_selected}
+                  </Text>
+                  <Text style={styles.bookingDescription}>
+                    Date: {booking.date_selected}
                   </Text>
                   <Text style={styles.confirmedText}>Confirmed</Text>
                 </View>
