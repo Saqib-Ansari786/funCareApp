@@ -1,9 +1,10 @@
 import React from "react";
-import { Image, View, Text, StyleSheet } from "react-native";
+import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { TextInput, Button } from "react-native-paper";
 import Header from "../../components/Header";
+import { COLORS, FONTS } from "../../constants";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -13,11 +14,22 @@ const validationSchema = Yup.object().shape({
 
 const EmailScreen = ({ navigation }) => {
   const handleEmailSubmit = (values) => {
-    // You can add your email handling logic here.
-    // For example, sending the email to a server for verification.
-
-    // After email verification, navigate to the VerificationScreen.
     navigation.navigate("VerificationScreen");
+  };
+
+  const sendEmail = async (email) => {
+    const response = await fetch(
+      "http://localhost:5000/api/v1/auth/sendEmail",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
   };
 
   return (
@@ -44,20 +56,23 @@ const EmailScreen = ({ navigation }) => {
           touched,
         }) => (
           <View style={styles.formContainer}>
+            <Text style={{ ...FONTS.h1 }}>Enter Your Email</Text>
             <TextInput
               label="Email"
               style={styles.input}
               onChangeText={handleChange("email")}
               onBlur={handleBlur("email")}
               value={values.email}
+              mode="outlined"
+              theme={{ colors: { primary: COLORS.primary } }}
             />
             {touched.email && errors.email && (
               <Text style={styles.errorText}>{errors.email}</Text>
             )}
 
-            <Button style={styles.button} onPress={handleSubmit}>
-              Next
-            </Button>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+              <Text style={{ color: "white" }}>Next</Text>
+            </TouchableOpacity>
           </View>
         )}
       </Formik>
@@ -82,6 +97,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "80%",
     alignItems: "center",
+    height: "50%",
+    justifyContent: "space-evenly",
+    shadowColor: "#000",
   },
   input: {
     width: "100%",
@@ -89,9 +107,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   button: {
-    width: "100%",
-    marginVertical: 20,
-    padding: 10,
+    backgroundColor: COLORS.primary,
+    width: "70%",
+    height: 50,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
   errorText: {
     color: "red",
