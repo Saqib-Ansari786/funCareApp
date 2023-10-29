@@ -27,6 +27,9 @@ import Onboarding3 from "./screens/OnBoardingScreens/Onboarding3";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import PackageDetailScreen from "./screens/PackageDetail";
 import BookingScreen from "./screens/BookingConfirmation";
+import EmailScreen from "./screens/SignupScreens/EmailScreen";
+import VerificationScreen from "./screens/SignupScreens/VerificationScreen";
+import UserNameImageScreen from "./screens/SignupScreens/UserNameImageScreen";
 
 const theme = {
   ...DefaultTheme,
@@ -48,7 +51,7 @@ function Main() {
       // User is already authenticated, navigate to home screen
       dispatch({ type: "SET_USER_ID", payload: authId });
       console.log(authId);
-      setRoute("Home");
+      setRoute("EmailScreen");
     } else {
       // User is not authenticated, navigate to sign up screen
       setRoute("Onboarding1");
@@ -194,6 +197,32 @@ function Main() {
           <Stack.Screen
             name="BookingConfirmation"
             component={BookingScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
+
+          {/* Authentication User screens */}
+          <Stack.Screen
+            name="EmailScreen"
+            component={EmailScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="VerificationScreen"
+            component={VerificationScreen}
+            options={{
+              title: null,
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="UserNameImageScreen"
+            component={UserNameImageScreen}
             options={{
               title: null,
               headerShown: false,
