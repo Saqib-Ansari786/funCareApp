@@ -1,8 +1,16 @@
 import React, { useRef, useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import Header from "../../components/Header";
 import { COLORS, FONTS } from "../../constants";
 import { TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const VerificationCodeInput = ({ value, onChangeText }) => {
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -17,6 +25,12 @@ const VerificationCodeInput = ({ value, onChangeText }) => {
     onChangeText(updatedValue.join(""));
   };
 
+  const handleBackspace = (e, index) => {
+    if (e.nativeEvent.key === "Backspace" && index !== 0) {
+      inputRefs[index - 1].current.focus();
+    }
+  };
+
   return (
     <View style={styles.verificationCodeContainer}>
       {inputRefs.map((ref, index) => (
@@ -27,18 +41,50 @@ const VerificationCodeInput = ({ value, onChangeText }) => {
           value={value[index]}
           ref={ref}
           maxLength={1}
+          keyboardType="number-pad"
+          onKeyPress={(e) => handleBackspace(e, index)}
         />
       ))}
     </View>
   );
 };
 
-const VerificationScreen = ({ navigation }) => {
+const VerificationScreen = ({ navigation, route }) => {
   const [verificationCode, setVerificationCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { userId } = route.params;
+  const dispatch = useDispatch();
 
   const handleVerification = () => {
     console.log("Verification code: ", verificationCode);
-    navigation.navigate("UserNameImageScreen");
+    postVerificationCode(verificationCode);
+  };
+
+  const postVerificationCode = async (code) => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        "https://funcare-backend.vercel.app/api/auth/clientuser/verifyEmail",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ verification_code: code, userId }),
+        }
+      );
+      const data = await response.json();
+      console.log(data.clientUser._id);
+      dispatch({ type: "SET_USER_ID", payload: data.clientUser._id });
+      await AsyncStorage.setItem("authId", data.clientUser._id);
+      navigation.navigate("UserNameImageScreen", {
+        userId,
+      });
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,7 +104,11 @@ const VerificationScreen = ({ navigation }) => {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleVerification}>
-          <Text style={{ color: "white" }}>Verify Email</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={{ color: "#fff", ...FONTS.h3 }}>Verify</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -88,7 +138,7 @@ const styles = StyleSheet.create({
   verificationCodeInput: {
     width: "20%",
     height: 50,
-    backgroundColor: "white",
+    backgroundColor: "lightgrey",
     margin: 5,
     textAlign: "center",
   },

@@ -1,5 +1,12 @@
-import React from "react";
-import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { TextInput, Button } from "react-native-paper";
@@ -14,22 +21,36 @@ const validationSchema = Yup.object().shape({
 
 const EmailScreen = ({ navigation }) => {
   const handleEmailSubmit = (values) => {
-    navigation.navigate("VerificationScreen");
+    sendEmail(values.email);
   };
 
+  const [loading, setLoading] = useState(false);
+
   const sendEmail = async (email) => {
-    const response = await fetch(
-      "http://localhost:5000/api/v1/auth/sendEmail",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      }
-    );
-    const data = await response.json();
-    console.log(data);
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "https://funcare-backend.vercel.app/api/auth/clientuser/sendEmail",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      navigation.navigate("VerificationScreen", {
+        userId: data.isClientUser._id,
+      });
+
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
   };
 
   return (
@@ -71,7 +92,11 @@ const EmailScreen = ({ navigation }) => {
             )}
 
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={{ color: "white" }}>Next</Text>
+              {loading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text style={{ color: "white" }}>Next</Text>
+              )}
             </TouchableOpacity>
           </View>
         )}

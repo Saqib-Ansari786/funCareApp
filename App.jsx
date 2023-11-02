@@ -51,7 +51,7 @@ function Main() {
       // User is already authenticated, navigate to home screen
       dispatch({ type: "SET_USER_ID", payload: authId });
       console.log(authId);
-      setRoute("EmailScreen");
+      setRoute("Home");
     } else {
       // User is not authenticated, navigate to sign up screen
       setRoute("Onboarding1");
