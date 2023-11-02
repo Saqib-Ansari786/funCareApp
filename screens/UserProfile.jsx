@@ -23,12 +23,13 @@ const UserProfileScreen = ({ navigation }) => {
   useEffect(() => {
     async function fetchUser() {
       try {
+        console.log("user id is", userId);
         setIsLoading(true);
         const response = await fetch(
-          `http://starter-express-api-git-main-salman36.vercel.app/api/auth/user/record/${userId}`
+          `https://funcare-backend.vercel.app/api/auth/clientuser/${userId}`
         );
         const responseData = await response.json();
-        setUserData(responseData.userRecord[0]);
+        setUserData(responseData.user);
         dispatch({ type: "SET_USER_REQUEST_FLAG", payload: false });
       } catch (error) {
         console.error(error);
@@ -47,9 +48,17 @@ const UserProfileScreen = ({ navigation }) => {
       ) : (
         <>
           <View style={styles.header}>
-            <Image style={styles.avatar} source={{ uri: userData.image }} />
-            <Text style={styles.name}>{userData.name}</Text>
-            <Text style={styles.phone}>{userData.phone}</Text>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: userData.image
+                  ? userData.image
+                  : "https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png",
+              }}
+            />
+            <Text style={styles.name}>
+              {userData.name ? userData.name : "Unknown"}
+            </Text>
             <Text style={styles.email}>{userData.email}</Text>
           </View>
           <TouchableOpacity
