@@ -7,6 +7,7 @@ import { COLORS, FONTS } from "../../constants";
 const UserNameImageScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [imageUri, setImageUri] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleImagePick = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -17,7 +18,7 @@ const UserNameImageScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+      postImage(result.assets[0].uri);
     }
   };
 
@@ -26,9 +27,49 @@ const UserNameImageScreen = ({ navigation }) => {
     navigation.navigate("Home");
   };
 
-  const handleContinue = () => {
-    // Handle saving the user's name and image (imageUri) and navigate to the next screen
-    navigation.navigate("Home");
+  const handleContinue = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          imageUri,
+        }),
+      });
+      const resData = await response.json();
+      console.log(resData);
+      setLoading(false);
+      if (resData.success) {
+        navigation.navigate("Home");
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
+  const postImage = async (image) => {
+    try {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "funcare_business_images");
+      data.append("cloud_name", "dj4jj7sog");
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dj4jj7sog/image/upload",
+        {
+          method: "post",
+          body: data,
+        }
+      );
+      const resData = await response.json();
+      setImageUri(resData.secure_url);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -68,10 +109,12 @@ const UserNameImageScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
           <Text style={styles.buttonText}>Skip</Text>
         </TouchableOpacity>
+
         <Button
           mode="contained"
           onPress={handleContinue}
           theme={{ colors: { primary: COLORS.primary } }}
+          loading={loading}
         >
           Continue
         </Button>
