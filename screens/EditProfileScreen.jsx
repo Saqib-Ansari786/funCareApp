@@ -9,7 +9,7 @@ import Header from "../components/Header";
 import { useDispatch } from "react-redux";
 
 const EditProfileScreen = ({ navigation, route }) => {
-  const { name, email, image, firebase_id, phone } = route.params;
+  const { name, email, image, _id } = route.params;
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -37,25 +37,48 @@ const EditProfileScreen = ({ navigation, route }) => {
     });
 
     if (!result.canceled) {
-      setAvatarUrl(result.assets[0].uri);
+      postImage({
+        uri: result.assets[0].uri,
+        type: `test/${result.assets[0].uri.split(".")[1]}`,
+        name: result.assets[0].uri.split("/")[
+          result.assets[0].uri.split("/").length - 1
+        ],
+      });
+    }
+  };
+
+  const postImage = async (image) => {
+    try {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "funcare_business_images");
+      data.append("cloud_name", "dj4jj7sog");
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dj4jj7sog/image/upload",
+        {
+          method: "post",
+          body: data,
+        }
+      );
+      const resData = await response.json();
+      setAvatarUrl(resData.secure_url);
+    } catch (err) {
+      console.log(err);
     }
   };
   async function updateUser(username, email) {
     try {
-      console.log(avatarUrl);
       const response = await fetch(
-        `http://starter-express-api-git-main-salman36.vercel.app/api/auth/appuser`,
+        `https://funcare-backend.vercel.app/api/auth/clientuser/update/${_id}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            firebase_id: firebase_id,
             name: username,
             email: email,
             image: avatarUrl,
-            phone: phone,
           }),
         }
       );

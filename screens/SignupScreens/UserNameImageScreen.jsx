@@ -18,7 +18,13 @@ const UserNameImageScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      postImage(result.assets[0].uri);
+      postImage({
+        uri: result.assets[0].uri,
+        type: `test/${result.assets[0].uri.split(".")[1]}`,
+        name: result.assets[0].uri.split("/")[
+          result.assets[0].uri.split("/").length - 1
+        ],
+      });
     }
   };
 
