@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import { COLORS, FONTS } from "../../constants";
+import { useSelector } from "react-redux";
 
 const UserNameImageScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [imageUri, setImageUri] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { userId } = useSelector((state) => state.user);
 
   const handleImagePick = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -36,16 +38,19 @@ const UserNameImageScreen = ({ navigation }) => {
   const handleContinue = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          imageUri,
-        }),
-      });
+      const response = await fetch(
+        `https://funcare-backend.vercel.app/api/auth/clientuser/update/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            image: imageUri,
+          }),
+        }
+      );
       const resData = await response.json();
       console.log(resData);
       setLoading(false);
