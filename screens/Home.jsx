@@ -35,7 +35,8 @@ const Home = () => {
       setLoading(true);
       const response = await fetch(url);
       const responseData = await response.json();
-      setDestinations(responseData.sort((a, b) => a.updatedAt > b.updatedAt));
+      const data = responseData?.filter((item) => item.status === true);
+      setDestinations(data?.sort((a, b) => a.updatedAt > b.updatedAt));
       dispatch({ type: "SET_PLAYLAND", payload: responseData });
       console.log(responseData);
     } catch (error) {
@@ -150,13 +151,18 @@ const Home = () => {
               alignItems: "center",
             }}
           >
-            <FlatList
-              horizontal={false}
-              showsHorizontalScrollIndicator={false}
-              data={destinations}
-              keyExtractor={(item) => item._id.toString()}
-              renderItem={({ item, index }) => renderDestinations(item, index)}
-            />
+            {destinations.length > 0 ? (
+              <FlatList
+                data={destinations}
+                keyExtractor={(item) => `${item.id}`}
+                renderItem={({ item, index }) =>
+                  renderDestinations(item, index)
+                }
+                showsVerticalScrollIndicator={false}
+              />
+            ) : (
+              <Text style={{ fontSize: 18 }}>No PlayLands Found</Text>
+            )}
           </View>
         )}
       </View>
