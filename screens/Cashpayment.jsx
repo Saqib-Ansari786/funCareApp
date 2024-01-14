@@ -108,7 +108,14 @@ const BookingScreen = ({ navigation, route }) => {
   });
 
   return (
-    <ImageBackground style={styles.container} source={images.cash_background}>
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/images/Picture2.png")}
+      imageStyle={{
+        resizeMode: "cover",
+        opacity: 0.4,
+      }}
+    >
       <Header />
       <Text style={{ ...FONTS.h1, marginTop: 100 }}>Pay with Card</Text>
 

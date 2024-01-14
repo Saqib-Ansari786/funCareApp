@@ -56,9 +56,7 @@ const EmailScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{
-          uri: "https://t3.ftcdn.net/jpg/02/98/73/38/360_F_298733817_4721ndxzrFXWfFw3ra7vpQ3rM9Jph22c.jpg",
-        }}
+        source={require("../../assets/images/Picture1.jpg")}
         style={styles.backgroundImage}
       />
       <Header />
